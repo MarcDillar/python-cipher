@@ -2,7 +2,7 @@
 import unittest
 from .context import ciphers
 
-class TestCaesarCipherMethods(unittest.TestCase):
+class CaesarCipherTest(unittest.TestCase):
     """Unit Test Class"""
 
     def test_encrypt(self):
