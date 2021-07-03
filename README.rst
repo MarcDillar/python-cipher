@@ -6,13 +6,16 @@ This project compiles simple ciphers implementations in Python for teaching purp
 Installation
 ------------
 
-    make init
+.. code-block::
+
+    pip install -r requirements.txt
     pip install -e .
 
 Unit tests
 ----------
+.. code-block::
 
-    make test
+    python setup.py test
 
 Contribute
 ----------
