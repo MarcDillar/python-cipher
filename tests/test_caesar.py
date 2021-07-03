@@ -15,22 +15,22 @@ class CaesarCipherTest(unittest.TestCase):
 
     def test_encrypt_method_incorrect_message(self):
         """Test that the encrypt method raises an Exception if the message is incorrect"""
-        with self.assertRaises(ciphers.caesar.IncorrectMessageError):
+        with self.assertRaises(ciphers.exceptions.IncorrectMessageError):
             ciphers.caesar.CaesarCipher().encrypt(1, 13)
 
     def test_encrypt_method_incorrect_key(self):
         """Test that the encrypt method raises an Exception if the key is incorrect"""
-        with self.assertRaises(ciphers.caesar.IncorrectCipherKeyError):
+        with self.assertRaises(ciphers.exceptions.IncorrectCipherKeyError):
             ciphers.caesar.CaesarCipher().encrypt("This is another message", "a")
 
     def test_decrypt_method_incorrect_message(self):
         """Test that the decrypt method raises an Exception if the message is incorrect"""
-        with self.assertRaises(ciphers.caesar.IncorrectMessageError):
+        with self.assertRaises(ciphers.exceptions.IncorrectMessageError):
             ciphers.caesar.CaesarCipher().decrypt(1, 13)
 
     def test_decrypt_method_incorrect_key(self):
         """Test that the decrypt method raises an Exception if the key is incorrect"""
-        with self.assertRaises(ciphers.caesar.IncorrectCipherKeyError):
+        with self.assertRaises(ciphers.exceptions.IncorrectCipherKeyError):
             ciphers.caesar.CaesarCipher().decrypt("This is another message", "a")
 
     def test_init_incorrect_symbols_list(self):
