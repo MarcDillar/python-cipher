@@ -7,11 +7,15 @@ class CaesarCipherTest(unittest.TestCase):
 
     def test_encrypt(self):
         """Test the result of an encryption"""
-        self.assertEqual(ciphers.caesar.CaesarCipher().encrypt("This is my original message!", 13), "'uvF7vF7zL7BEvtvAny7zrFFntr.")
+        cipher = ciphers.caesar.CaesarCipher()
+        encrypted_message = cipher.encrypt("This is my original message!", 13)
+        self.assertEqual(encrypted_message, "'uvF7vF7zL7BEvtvAny7zrFFntr.")
 
     def test_decrypt(self):
         """Test the result of a decryption"""
-        self.assertEqual(ciphers.caesar.CaesarCipher().decrypt("'uvF7vF7zL7BEvtvAny7zrFFntr.", 13), "This is my original message!")
+        cipher = ciphers.caesar.CaesarCipher()
+        decrypted_message = cipher.decrypt("'uvF7vF7zL7BEvtvAny7zrFFntr.", 13)
+        self.assertEqual(decrypted_message, "This is my original message!")
 
     def test_encrypt_method_incorrect_message(self):
         """Test that the encrypt method raises an Exception if the message is incorrect"""
