@@ -64,20 +64,19 @@ class SimpleTranspositionCipherHacker:
         '''
 
         decrypted_messages = []
-        for symbols_set in self.symbols_sets:
-            simple_transposition_cipher = transposition.SimpleTranspositionCipher()
-            for key in range(1,len(message)+1):
-                decrypted_message = simple_transposition_cipher.decrypt(message=message, key=key)
+        simple_transposition_cipher = transposition.SimpleTranspositionCipher()
+        for key in range(1,len(message)+1):
+            decrypted_message = simple_transposition_cipher.decrypt(message=message, key=key)
 
-                if p == 0:
-                    decrypted_messages.append(decrypted_message)
-                    continue
-                try:
-                    for detected_lang in detect_langs(decrypted_message):
-                        if (detected_lang.lang == self.language.lower() and
-                            detected_lang.prob > p):
-                            decrypted_messages.append(decrypted_message)
-                except LangDetectException:
-                    pass
+            if p == 0:
+                decrypted_messages.append(decrypted_message)
+                continue
+            try:
+                for detected_lang in detect_langs(decrypted_message):
+                    if (detected_lang.lang == self.language.lower() and
+                        detected_lang.prob > p):
+                        decrypted_messages.append(decrypted_message)
+            except LangDetectException:
+                pass
 
         return decrypted_messages
