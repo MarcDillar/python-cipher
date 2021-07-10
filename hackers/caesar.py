@@ -6,6 +6,7 @@ Classes:
 
 import string
 from langdetect import detect_langs
+from langdetect.lang_detect_exception import LangDetectException
 from ciphers import caesar
 
 class CaesarCipherHacker:
@@ -71,10 +72,12 @@ class CaesarCipherHacker:
                 if p == 0:
                     decrypted_messages.append(decrypted_message)
                     continue
-
-                for detected_lang in detect_langs(decrypted_message):
-                    if (detected_lang.lang == self.language.lower() and
-                        detected_lang.prob > p):
-                        decrypted_messages.append(decrypted_message)
+                try:
+                    for detected_lang in detect_langs(decrypted_message):
+                        if (detected_lang.lang == self.language.lower() and
+                            detected_lang.prob > p):
+                            decrypted_messages.append(decrypted_message)
+                except LangDetectException:
+                    print(f"No language detected for message: {decrypted_message}")
 
         return decrypted_messages
