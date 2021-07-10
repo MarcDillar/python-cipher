@@ -1,7 +1,7 @@
 """Example of message encryption using the Caesar cipher"""
 
-from ciphers.transposition import SimpleTranspositionCipher
-from hackers.transposition import SimpleTranspositionCipherHacker
+from simple_ciphers.ciphers.transposition import SimpleTranspositionCipher
+from simple_ciphers.hackers.transposition import SimpleTranspositionCipherHacker
 
 MESSAGE_TO_ENCRYPT = "This is the message that will be encrypted. For instance, adding another sentence makes it harder to uncipher"
 KEY = 20

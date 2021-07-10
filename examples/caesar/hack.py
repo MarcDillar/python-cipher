@@ -1,7 +1,7 @@
 """Example of message encryption using the Caesar cipher"""
 
-from ciphers.caesar import CaesarCipher
-from hackers.caesar import CaesarCipherHacker
+from simple_ciphers.ciphers.caesar import CaesarCipher
+from simple_ciphers.hackers.caesar import CaesarCipherHacker
 
 MESSAGE_TO_ENCRYPT = "This is the message that will be encrypted"
 KEY = 10

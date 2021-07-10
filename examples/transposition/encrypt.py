@@ -1,6 +1,6 @@
 """Example of message encryption using the Simple Transposition cipher"""
 
-from ciphers.transposition import SimpleTranspositionCipher
+from simple_ciphers.ciphers.transposition import SimpleTranspositionCipher
 
 MESSAGE_TO_ENCRYPT = "This is the message that will be encrypted"
 KEY = 10

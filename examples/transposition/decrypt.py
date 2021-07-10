@@ -1,6 +1,6 @@
 """Example of message decryption using the Simple Transposition cipher"""
 
-from ciphers.transposition import SimpleTranspositionCipher
+from simple_ciphers.ciphers.transposition import SimpleTranspositionCipher
 
 MESSAGE_TO_DECRYPT = "Tiehg!iisn ails  mmeys soarg"
 KEY = 13
