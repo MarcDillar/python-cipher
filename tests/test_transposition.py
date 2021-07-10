@@ -1,4 +1,4 @@
-"""Unit Tests for Permutation Cipher"""
+"""Unit Tests for the Simple Transposition Cipher"""
 import unittest
 from .context import ciphers
 

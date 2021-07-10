@@ -1,4 +1,4 @@
-"""Unit Tests for Caesar Cipher"""
+"""Unit Tests for the Caesar Cipher"""
 import unittest
 from .context import ciphers
 
