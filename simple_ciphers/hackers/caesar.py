@@ -1,17 +1,17 @@
 """Simple Caesar Cipher hacker
 
 Classes:
-    SimpleTranspositionCipherHacker
+    CaesarCipherHacker
 """
 
 import string
 from langdetect import detect_langs
 from langdetect.lang_detect_exception import LangDetectException
-from ciphers import transposition
+from simple_ciphers.ciphers import caesar
 
-class SimpleTranspositionCipherHacker:
+class CaesarCipherHacker:
     '''
-    Class that allows to decrypt messages encrypted with a Simple Transposition Cipher
+    Class that allows to decrypt messages encrypted with a Caesar Cipher
     with an unknown key, using brute force
     ...
 
@@ -49,7 +49,7 @@ class SimpleTranspositionCipherHacker:
 
     def brute_force(self, message, p=0):
         '''
-        Corrects an index if out of the symbols list bounds.
+        Tries to decrypt by brute force a message encrypted using a Caesar Cipher
 
         Parameters:
             message (str): message that needs to be decrypted
@@ -64,19 +64,20 @@ class SimpleTranspositionCipherHacker:
         '''
 
         decrypted_messages = []
-        simple_transposition_cipher = transposition.SimpleTranspositionCipher()
-        for key in range(1,len(message)+1):
-            decrypted_message = simple_transposition_cipher.decrypt(message=message, key=key)
+        for symbols_set in self.symbols_sets:
+            caesar_cipher = caesar.CaesarCipher(symbols=symbols_set)
+            for key in range(len(symbols_set)):
+                decrypted_message = caesar_cipher.decrypt(message=message, key=key)
 
-            if p == 0:
-                decrypted_messages.append(decrypted_message)
-                continue
-            try:
-                for detected_lang in detect_langs(decrypted_message):
-                    if (detected_lang.lang == self.language.lower() and
-                        detected_lang.prob > p):
-                        decrypted_messages.append(decrypted_message)
-            except LangDetectException:
-                pass
+                if p == 0:
+                    decrypted_messages.append(decrypted_message)
+                    continue
+                try:
+                    for detected_lang in detect_langs(decrypted_message):
+                        if (detected_lang.lang == self.language.lower() and
+                            detected_lang.prob > p):
+                            decrypted_messages.append(decrypted_message)
+                except LangDetectException:
+                    pass
 
         return decrypted_messages
