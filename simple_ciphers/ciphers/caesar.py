@@ -22,7 +22,7 @@ class CaesarCipher:
     encrypt(message, key):
         Encrypts a message
 
-    derypt(message, key):
+    decrypt(message, key):
         Decrypts a message
 
     cipher(message, key, mode=None)
