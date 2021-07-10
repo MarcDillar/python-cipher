@@ -78,6 +78,6 @@ class CaesarCipherHacker:
                             detected_lang.prob > p):
                             decrypted_messages.append(decrypted_message)
                 except LangDetectException:
-                    print(f"No language detected for message: {decrypted_message}")
+                    pass
 
         return decrypted_messages
