@@ -1,4 +1,7 @@
-"""Example of message encryption using the Caesar cipher"""
+"""
+Example of message brute force decryption
+of a message encrypted with a simple transposition cipher
+"""
 
 from simple_ciphers.ciphers.transposition import SimpleTranspositionCipher
 from simple_ciphers.hackers.transposition import SimpleTranspositionCipherHacker

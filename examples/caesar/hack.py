@@ -1,4 +1,7 @@
-"""Example of message encryption using the Caesar cipher"""
+"""
+Example of message brute force decryption
+of a message encrypted with a Caesar cipher
+"""
 
 from simple_ciphers.ciphers.caesar import CaesarCipher
 from simple_ciphers.hackers.caesar import CaesarCipherHacker
