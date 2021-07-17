@@ -3,7 +3,7 @@
 Classes:
     AffineCipher
 """
-import string
+from string import printable
 from math import gcd
 from random import randint
 from .exceptions import IncorrectCipherKeyError, IncorrectMessageError
@@ -30,12 +30,13 @@ class AffineCipher:
         Decrypts a message
     '''
 
-    def __init__(self, symbols=string.printable):
+    def __init__(self, symbols=printable):
         '''
         Create a CaesarCipher instance
 
         Parameters:
-            symbols (str, optionnal): string made of characters used by the Caesar Cipher
+            symbols (str, optionnal):
+                string made of characters used by the Caesar Cipher
         '''
 
         if not isinstance(symbols, str):
@@ -62,7 +63,8 @@ class AffineCipher:
         elif key_a < 0 or key_b < 0:
             error_message = 'Keys must be greater than 0'
         elif gcd(key_a, len(self.symbols)) != 1:
-            error_message = f'Key A ({key_a}) and the symbol set size ({len(self.symbols)}) are not relatively prime.'
+            error_message = f"""Key A ({key_a}) and the symbol set size ({len(self.symbols)})
+            are not relatively prime."""
 
         if error_message:
             return False, IncorrectCipherKeyError(message=error_message)
@@ -82,7 +84,7 @@ class AffineCipher:
 
             valid_keys = self.check_keys(key_a=key_a, key_b=key_b)[0]
             if valid_keys:
-                return key_a, key_b                 
+                return key_a, key_b
 
     def encrypt(self, message, key_a, key_b):
         '''
@@ -112,7 +114,9 @@ class AffineCipher:
         for symbol in message:
             if symbol in self.symbols:
                 symbolIndex = self.symbols.find(symbol)
-                encrypted_message += self.symbols[(symbolIndex * key_a + key_b) % len(self.symbols)]
+                encrypted_message += self.symbols[
+                    (symbolIndex * key_a + key_b) % len(self.symbols)
+                ]
             else:
                 encrypted_message += symbol
         return encrypted_message
@@ -147,7 +151,9 @@ class AffineCipher:
         for symbol in message:
             if symbol in self.symbols:
                 symbolIndex = self.symbols.find(symbol)
-                decrypted_message += self.symbols[(symbolIndex - key_b) * inv_key_a % len(self.symbols)]
+                decrypted_message += self.symbols[
+                    (symbolIndex - key_b) * inv_key_a % len(self.symbols)
+                ]
             else:
                 decrypted_message += symbol
         return decrypted_message
