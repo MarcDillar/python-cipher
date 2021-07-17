@@ -113,7 +113,7 @@ class CaesarCipher:
             mode (string, optionnal): encrypt or decrypt. Default: encrypt
 
         Returns:
-            message (str): decrypted message
+            message (str): encrypted or decrypted message
 
         Raises:
             IncorrectMessageError: if message is not a string or is empty
