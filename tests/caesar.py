@@ -77,7 +77,7 @@ class CaesarCipherTest(unittest.TestCase):
 
         encrypted_message = cipher.encrypt(self.MESSAGE_TO_ENCRYPT, self.KEY)
         decrypted_message = cipher.decrypt(encrypted_message, self.KEY)
-        self.assertEqual(encrypted_message, decrypted_message)
+        self.assertEqual(self.MESSAGE_TO_ENCRYPT, decrypted_message)
 
 
 if __name__ == '__main__':
