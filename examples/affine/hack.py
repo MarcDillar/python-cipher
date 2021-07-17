@@ -11,7 +11,6 @@ MESSAGE_TO_ENCRYPT = "This is the message that will be encrypted"
 cipher = AffineCipher()
 hacker = AffineCipherHacker()
 
-
 encrypted_message = cipher.encrypt(MESSAGE_TO_ENCRYPT, 17, 20)
 decrypted_messages = hacker.brute_force(encrypted_message, p=0.95)
 print('\n'.join(decrypted_messages))
