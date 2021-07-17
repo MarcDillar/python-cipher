@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-with open('README.rst') as f:
+with open('README.md') as f:
     readme = f.read()
 
 with open('LICENSE') as f:
@@ -11,7 +11,7 @@ setup(
     version='0.1.0',
     description='Simple Python ciphers for teaching purposes',
     long_description=readme,
-    long_description_content_type="text/x-rst",
+    long_description_content_type='text/markdown',
     author='Marc Dillar',
     author_email='marc.dillar@gmail.com',
     url='https://github.com/MarcDillar/python-cipher',
