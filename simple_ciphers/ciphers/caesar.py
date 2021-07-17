@@ -6,6 +6,7 @@ Classes:
 import string
 from .exceptions import IncorrectCipherKeyError, IncorrectMessageError
 
+
 class CaesarCipher:
     '''
     Class handling basic Caesar Cipher operations
@@ -37,7 +38,8 @@ class CaesarCipher:
         Create a CaesarCipher instance
 
         Parameters:
-            symbols (str, optionnal): string made of characters used by the Caesar Cipher
+            symbols (str, optionnal):
+                string made of characters used by the Caesar Cipher
         '''
 
         if not isinstance(symbols, str):
@@ -53,7 +55,8 @@ class CaesarCipher:
             index (int): an index
 
         Returns:
-            index (int): corrected index that lies between the symbols list's bounds
+            index (int):
+                corrected index that lies between the symbols list's bounds
 
         Raises:
             ValueError: if key isn't an integer
@@ -124,7 +127,8 @@ class CaesarCipher:
             raise IncorrectMessageError
 
         if not isinstance(key, int):
-            raise IncorrectCipherKeyError(message="The cipher key has to be an integer")
+            message = "The cipher key has to be an integer"
+            raise IncorrectCipherKeyError(message)
 
         if mode is None:
             mode = self.ENCRYPT_MODE
@@ -133,16 +137,16 @@ class CaesarCipher:
             raise ValueError
 
         translated = ''
-        symbols=self.symbols
+        symbols = self.symbols
 
         for symbol in message:
             new_symbol = symbol
             if symbol in symbols:
                 index = symbols.find(symbol)
 
-                if mode==self.DECRYPT_MODE:
+                if mode == self.DECRYPT_MODE:
                     new_index = index - key
-                elif mode==self.ENCRYPT_MODE:
+                elif mode == self.ENCRYPT_MODE:
                     new_index = index + key
 
                 new_symbol = symbols[self.__handle_index_wraparound(new_index)]
