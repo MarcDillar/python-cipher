@@ -2,6 +2,7 @@
 import unittest
 from .context import transposition, transposition_hacker
 
+
 class SimpleTranspositionCipherHackerTest(unittest.TestCase):
     """Unit Test Class"""
 
@@ -9,7 +10,7 @@ class SimpleTranspositionCipherHackerTest(unittest.TestCase):
         """Check if a message encrypted with a
         Simple Transposition Cipher is found by brute force"""
 
-        original_message = "This is my original message! The message contains several sentences"
+        original_message = "This is my original message!"
         key = 20
 
         cipher = transposition.SimpleTranspositionCipher()
