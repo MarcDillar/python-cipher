@@ -69,15 +69,16 @@ class CaesarCipherHacker:
             for key in range(len(symbols_set)):
                 decrypted_message = caesar_cipher.decrypt(message=message, key=key)
 
-                if p == 0:
-                    decrypted_messages.append(decrypted_message)
-                    continue
                 try:
                     for detected_lang in detect_langs(decrypted_message):
-                        if (detected_lang.lang == self.language.lower() and
-                            detected_lang.prob > p):
-                            decrypted_messages.append(decrypted_message)
+                            
+                        if (detected_lang.lang == self.language.lower()
+                            and detected_lang.prob > p):
+                            decrypted_messages.append({
+                            "text": decrypted_message,
+                            "p": detected_lang.prob
+                            })
                 except LangDetectException:
                     pass
 
-        return decrypted_messages
+        return [message["text"] for message in sorted(decrypted_messages, key=lambda x: x["p"], reverse=True)]
