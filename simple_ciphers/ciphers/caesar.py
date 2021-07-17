@@ -105,7 +105,7 @@ class CaesarCipher:
 
     def cipher(self, message, key, mode=None):
         '''
-        Decrypts a message using the Caesar cipher.
+        Encrypts or decrypts a message using the Caesar cipher.
 
         Parameters:
             message (str): message to decrypt
