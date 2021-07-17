@@ -6,16 +6,19 @@ Classes:
 from simple_ciphers.ciphers import transposition
 from .hacker import Hacker
 
+
 class SimpleTranspositionCipherHacker(Hacker):
     '''
-    Class that allows to decrypt messages encrypted with a Simple Transposition Cipher
+    Class that allows to decrypt messages encrypted with
+    a Simple Transposition Cipher
     with an unknown key, using brute force
     ...
 
     Attributes
     ----------
     language : str
-        Language code (ISO 639-1) used by the message that needs to be decrypted
+        Language code (ISO 639-1) used by the message
+        that needs to be decrypted
 
     Methods
     -------
@@ -30,9 +33,12 @@ class SimpleTranspositionCipherHacker(Hacker):
         Parameters:
             message (str): message that needs to be decrypted
             p (float):
-                the method will return all decrypted messages where the probability
-                that they belong to the searched language is higher than this value.
-                0 by default (=the method will return all messages decrypted by brute force)
+                the method will return all decrypted
+                messages where the probability
+                that they belong to the searched
+                language is higher than this value.
+                0 by default (=the method will return
+                all messages decrypted by brute force)
 
         Returns:
             decrypted_messages (list):
@@ -40,9 +46,9 @@ class SimpleTranspositionCipherHacker(Hacker):
         '''
 
         decrypted_messages = []
-        simple_transposition_cipher = transposition.SimpleTranspositionCipher()
-        for key in range(1,len(message)+1):
-            decrypted_message = simple_transposition_cipher.decrypt(message=message, key=key)
+        cipher = transposition.SimpleTranspositionCipher()
+        for key in range(1, len(message)+1):
+            decrypted_message = cipher.decrypt(message, key)
             lang, prob = self.lang_identifier.classify(decrypted_message)
 
             if lang == self.language and prob >= p:
@@ -51,4 +57,10 @@ class SimpleTranspositionCipherHacker(Hacker):
                     "p": prob
                 })
 
-        return [message["text"] for message in sorted(decrypted_messages, key=lambda x: x["p"], reverse=True)]
+        decrypted_messages = sorted(
+            decrypted_messages,
+            key=lambda x: x["p"],
+            reverse=True
+        )
+
+        return [message["text"] for message in decrypted_messages]
