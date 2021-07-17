@@ -15,7 +15,8 @@ def egcd(a, b):
             a, b (int, int): 2 integers
 
         Returns:
-            g, x, y (int, int, int) : integers such that a*x + b*y = g = gcd(a, b)
+            g, x, y (int, int, int) :
+            integers such that a*x + b*y = g = gcd(a, b)
     '''
 
     if a == 0:
@@ -23,6 +24,7 @@ def egcd(a, b):
     else:
         g, y, x = egcd(b % a, a)
         return (g, x - (b // a) * y, y)
+
 
 def modinv(a, m):
     '''
