@@ -3,12 +3,10 @@
 Classes:
     SimpleTranspositionCipherHacker
 """
-
-from langdetect import detect_langs
-from langdetect.lang_detect_exception import LangDetectException
 from simple_ciphers.ciphers import transposition
+from .hacker import Hacker
 
-class SimpleTranspositionCipherHacker:
+class SimpleTranspositionCipherHacker(Hacker):
     '''
     Class that allows to decrypt messages encrypted with a Simple Transposition Cipher
     with an unknown key, using brute force
@@ -24,17 +22,6 @@ class SimpleTranspositionCipherHacker:
     brute_force(message):
         Decodes a message using brute force
     '''
-
-    def __init__(self, language="en"):
-        '''
-        Create a CaesarCipherHacker instance
-
-        Parameters:
-            language (str, optionnal):
-                Language code (ISO 639-1) used by the message that needs to be decrypted.
-                'en' by default.
-        '''
-        self.language = language
 
     def brute_force(self, message, p=0):
         '''
@@ -56,19 +43,12 @@ class SimpleTranspositionCipherHacker:
         simple_transposition_cipher = transposition.SimpleTranspositionCipher()
         for key in range(1,len(message)+1):
             decrypted_message = simple_transposition_cipher.decrypt(message=message, key=key)
+            lang, prob = self.lang_identifier.classify(decrypted_message)
 
-            try:
-                for detected_lang in detect_langs(decrypted_message):
-                            
-                    if (detected_lang.lang == self.language.lower()
-                        and detected_lang.prob > p):
-
-                        decrypted_messages.append({
-                        "text": decrypted_message,
-                        "p": detected_lang.prob
-                        })
-                        
-            except LangDetectException:
-                pass
+            if lang == self.language and prob >= p:
+                decrypted_messages.append({
+                    "text": decrypted_message,
+                    "p": prob
+                })
 
         return [message["text"] for message in sorted(decrypted_messages, key=lambda x: x["p"], reverse=True)]

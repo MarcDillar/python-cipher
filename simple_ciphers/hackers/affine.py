@@ -3,13 +3,11 @@
 Classes:
     AffineCipherHacker
 """
-
-import string
-from langdetect import detect_langs
-from langdetect.lang_detect_exception import LangDetectException
+from langid.langid import LanguageIdentifier, model
 from simple_ciphers.ciphers import affine
+from .hacker import Hacker
 
-class AffineCipherHacker:
+class AffineCipherHacker(Hacker):
     '''
     Class that allows to decrypt messages encrypted with an Affine Cipher
     with an unknown key, using brute force
@@ -25,27 +23,6 @@ class AffineCipherHacker:
     brute_force(message):
         Decodes a message using brute force
     '''
-
-    def __init__(self, language="en"):
-        '''
-        Create a AffineCipherHacker instance
-
-        Parameters:
-            language (str, optionnal):
-                Language code (ISO 639-1) used by the message that needs to be decrypted.
-                'en' by default.
-        '''
-
-        self.symbols_sets=[
-            string.printable,
-            string.ascii_letters,
-            string.ascii_lowercase,
-            string.ascii_uppercase,
-            string.ascii_letters + string.whitespace,
-            string.ascii_lowercase + string.whitespace,
-            string.ascii_uppercase + string.whitespace
-        ]
-        self.language = language
 
     def brute_force(self, message, p=0):
         '''
@@ -74,16 +51,12 @@ class AffineCipherHacker:
 
                 for key_b in range(2, len(symbols_set)):
                     decrypted_message = affine_cipher.decrypt(message, key_a, key_b)
-                    try:
-                        for detected_lang in detect_langs(decrypted_message):
-                            
-                                if (detected_lang.lang == self.language.lower()
-                                    and detected_lang.prob > p):
-                                    decrypted_messages.append({
-                                        "text": decrypted_message,
-                                        "p": detected_lang.prob
-                                    })
-                    except LangDetectException:
-                        pass
+                    lang, prob = self.lang_identifier.classify(decrypted_message)
+
+                    if lang == self.language and prob >= p:
+                        decrypted_messages.append({
+                            "text": decrypted_message,
+                            "p": prob
+                        })
 
         return [message["text"] for message in sorted(decrypted_messages, key=lambda x: x["p"], reverse=True)]
