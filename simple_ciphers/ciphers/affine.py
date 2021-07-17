@@ -43,7 +43,7 @@ class AffineCipher:
 
         self.symbols = symbols
 
-    def check_keys(self, key_a, key_b):
+    def check_keys(self, key_a=0, key_b=0):
         '''
         Check if keys are valid
 
@@ -80,7 +80,7 @@ class AffineCipher:
             key_a = randint(2, len(self.symbols))
             key_b = randint(2, len(self.symbols))
 
-            valid_keys = self.check_keys(key_a, key_b)[0]
+            valid_keys = self.check_keys(key_a=key_a, key_b=key_b)[0]
             if valid_keys:
                 return key_a, key_b                 
 
@@ -104,7 +104,7 @@ class AffineCipher:
             raise IncorrectMessageError
 
         # Check if both keys are valid
-        valid_keys, error = self.check_keys(key_a, key_b)
+        valid_keys, error = self.check_keys(key_a=key_a, key_b=key_b)
         if not valid_keys:
             raise error
 
