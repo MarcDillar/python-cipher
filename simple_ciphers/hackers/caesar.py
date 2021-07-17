@@ -7,6 +7,7 @@ Classes:
 from simple_ciphers.ciphers import caesar
 from .hacker import Hacker
 
+
 class CaesarCipherHacker(Hacker):
     '''
     Class that allows to decrypt messages encrypted with a Caesar Cipher
@@ -16,7 +17,8 @@ class CaesarCipherHacker(Hacker):
     Attributes
     ----------
     language : str
-        Language code (ISO 639-1) used by the message that needs to be decrypted
+        Language code (ISO 639-1) used by the message
+        that needs to be decrypted
 
     Methods
     -------
@@ -24,17 +26,20 @@ class CaesarCipherHacker(Hacker):
         Decodes a message using brute force
     '''
 
-
     def brute_force(self, message, p=0):
         '''
-        Tries to decrypt by brute force a message encrypted using a Caesar Cipher
+        Tries to decrypt by brute force a message
+        encrypted using a Caesar Cipher
 
         Parameters:
             message (str): message that needs to be decrypted
             p (float):
-                the method will return all decrypted messages where the probability
-                that they belong to the searched language is higher than this value.
-                0 by default (=the method will return all messages decrypted by brute force)
+                the method will return all decrypted
+                messages where the probability
+                that they belong to the searched
+                language is higher than this value.
+                0 by default (=the method will return all
+                messages decrypted by brute force)
 
         Returns:
             decrypted_messages (list):
@@ -54,4 +59,10 @@ class CaesarCipherHacker(Hacker):
                         "p": prob
                     })
 
-        return [message["text"] for message in sorted(decrypted_messages, key=lambda x: x["p"], reverse=True)]
+        decrypted_messages = sorted(
+            decrypted_messages,
+            key=lambda x: x["p"],
+            reverse=True
+        )
+
+        return [message["text"] for message in decrypted_messages]
