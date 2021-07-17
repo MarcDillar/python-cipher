@@ -124,7 +124,7 @@ class CaesarCipher:
             raise IncorrectMessageError
 
         if not isinstance(key, int):
-            raise IncorrectCipherKeyError
+            raise IncorrectCipherKeyError(message="The cipher key has to be an integer")
 
         if mode is None:
             mode = self.ENCRYPT_MODE

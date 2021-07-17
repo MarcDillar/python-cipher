@@ -44,12 +44,15 @@ class AffineCipher:
 
     def __check_keys(self, key_a, key_b):
         if not isinstance(key_a, int) or not isinstance(key_b, int):
-            raise IncorrectCipherKeyError('Keys must be integers')
+            error_message = 'Keys must be integers'
         if key_a < 0 or key_b < 0:
-            raise IncorrectCipherKeyError('Keys must be greater than 0')
+            error_message = 'Keys must be greater than 0'
         if math.gcd(key_a, len(self.symbols)) != 1:
-            raise IncorrectCipherKeyError(f'Key A ({key_a}) and the symbol set size ({len(self.symbols)}) are not relatively prime.')
+            error_message = f'Key A ({key_a}) and the symbol set size ({len(self.symbols)}) are not relatively prime.'
 
+        if error_message:
+            raise IncorrectCipherKeyError(message=error_message)
+            
 
     def encrypt(self, message, key_a, key_b):
         '''

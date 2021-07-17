@@ -43,7 +43,7 @@ class SimpleTranspositionCipher:
             raise IncorrectMessageError
 
         if not isinstance(key, int):
-            raise IncorrectCipherKeyError
+            raise IncorrectCipherKeyError (message="The cipher key has to be an integer")
 
         cipher_table = [''] * key
 
@@ -75,7 +75,7 @@ class SimpleTranspositionCipher:
             raise IncorrectMessageError
 
         if not isinstance(key, int):
-            raise IncorrectCipherKeyError
+            raise IncorrectCipherKeyError(message="The cipher key has to be an integer")
 
         col_count = math.ceil(len(message) / key)
         rows_count = key
