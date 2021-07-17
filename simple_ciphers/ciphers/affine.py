@@ -43,18 +43,17 @@ class AffineCipher:
 
         self.symbols = symbols
 
-    def __check_keys(self, key_a, key_b):
+    def check_keys(self, key_a, key_b):
         '''
-        Private method. Check if keys are valid
+        Check if keys are valid
 
         Parameters:
             key_a, key_b (int, int): 2 keys
 
         Returns:
-            bool: True if the keys are valid
-
-        Raises:
-            IncorrectCipherKeyError if the keys are not valid
+            bool, error:
+                bool: True if the keys are valid else False
+                error: error to be raised if the keys are not valid
         '''
 
         error_message = None
@@ -66,9 +65,9 @@ class AffineCipher:
             error_message = f'Key A ({key_a}) and the symbol set size ({len(self.symbols)}) are not relatively prime.'
 
         if error_message:
-            raise IncorrectCipherKeyError(message=error_message)
+            return False, IncorrectCipherKeyError(message=error_message)
 
-        return True
+        return True, None
 
     def generate_random_keys(self):
         '''
@@ -77,17 +76,13 @@ class AffineCipher:
         Returns:
             key_a, key_b (int, int): 2 valid keys
         '''
-        valid_keys = False
-        while not valid_keys:
+        while True:
             key_a = randint(2, len(self.symbols))
             key_b = randint(2, len(self.symbols))
-            try:
-                self.__check_keys(key_a, key_b)
-                valid_keys = True
-            except IncorrectCipherKeyError:
-                valid_keys = False
-        
-        return key_a, key_b            
+
+            valid_keys = self.check_keys(key_a, key_b)[0]
+            if valid_keys:
+                return key_a, key_b                 
 
     def encrypt(self, message, key_a, key_b):
         '''
@@ -109,7 +104,10 @@ class AffineCipher:
             raise IncorrectMessageError
 
         # Check if both keys are valid
-        self.__check_keys(key_a, key_b)
+        valid_keys, error = self.check_keys(key_a, key_b)
+        if not valid_keys:
+            raise error
+
         encrypted_message = ''
         for symbol in message:
             if symbol in self.symbols:
@@ -139,7 +137,9 @@ class AffineCipher:
             raise IncorrectMessageError
 
         # Check if both keys are valid
-        self.__check_keys(key_a, key_b)
+        valid_keys, error = self.check_keys(key_a, key_b)
+        if not valid_keys:
+            raise error
 
         decrypted_message = ''
         inv_key_a = modinv(key_a, len(self.symbols))
