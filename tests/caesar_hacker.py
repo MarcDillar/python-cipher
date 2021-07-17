@@ -17,7 +17,7 @@ class CaesarCipherHackerTest(unittest.TestCase):
         cipher = caesar.CaesarCipher()
         encrypted_message = cipher.encrypt(
             self.MESSAGE_TO_ENCRYPT,
-            self.key
+            self.KEY
         )
 
         hacker = caesar_hacker.CaesarCipherHacker()
