@@ -3,14 +3,14 @@
 Classes:
     CaesarCipher
 """
-import string
+from string import ascii_lowercase
+from random import sample
 from .exceptions import IncorrectCipherKeyError, IncorrectMessageError
 
 class SimpleSubstitutionCipher:
     '''
     Class handling simple Substitution Cipher operations
     ...
-
 
     Methods
     -------
@@ -24,7 +24,7 @@ class SimpleSubstitutionCipher:
     ENCRYPT_MODE = "encrypt"
     DECRYPT_MODE = "decrypt"
 
-    def __init__(self, symbols=string.ascii_lowercase):
+    def __init__(self, symbols=ascii_lowercase):
         '''
         Create a SimpleSubstitutionCipher instance
 
@@ -47,6 +47,15 @@ class SimpleSubstitutionCipher:
         symbols_list.sort()
 
         return "".join(key_list) == "".join(symbols_list)
+
+    def generate_random_key(self):
+        '''
+        Generate a random valid key
+
+        Returns:
+            key (str): a valid key
+        '''
+        return ''.join(sample(self.symbols,len(self.symbols)))
 
     def encrypt(self, message, key):
         '''
