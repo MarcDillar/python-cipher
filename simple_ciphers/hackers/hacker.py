@@ -1,6 +1,7 @@
 import string
 from langid.langid import LanguageIdentifier, model
 
+
 class Hacker:
     def __init__(self, language="en"):
         '''
@@ -8,11 +9,12 @@ class Hacker:
 
         Parameters:
             language (str, optionnal):
-                Language code (ISO 639-1) used by the message that needs to be decrypted.
+                Language code (ISO 639-1) used by the message
+                that needs to be decrypted.
                 'en' by default.
         '''
 
-        self.symbols_sets=[
+        self.symbols_sets = [
             string.printable,
             string.ascii_letters,
             string.ascii_lowercase,
@@ -22,4 +24,7 @@ class Hacker:
             string.ascii_uppercase + string.whitespace
         ]
         self.language = language
-        self.lang_identifier = LanguageIdentifier.from_modelstring(model, norm_probs=True)
+        self.lang_identifier = LanguageIdentifier.from_modelstring(
+            model,
+            norm_probs=True
+        )
