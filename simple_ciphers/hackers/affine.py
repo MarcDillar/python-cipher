@@ -3,9 +3,9 @@
 Classes:
     AffineCipherHacker
 """
-from langid.langid import LanguageIdentifier, model
 from simple_ciphers.ciphers import affine
 from .hacker import Hacker
+
 
 class AffineCipherHacker(Hacker):
     '''
@@ -16,7 +16,8 @@ class AffineCipherHacker(Hacker):
     Attributes
     ----------
     language : str
-        Language code (ISO 639-1) used by the message that needs to be decrypted
+        Language code (ISO 639-1) used by the message
+        that needs to be decrypted
 
     Methods
     -------
@@ -26,14 +27,18 @@ class AffineCipherHacker(Hacker):
 
     def brute_force(self, message, p=0):
         '''
-        Tries to decrypt by brute force a message encrypted using an Affine Cipher
+        Tries to decrypt by brute force a message
+        encrypted using an Affine Cipher
 
         Parameters:
             message (str): message that needs to be decrypted
             p (float):
-                the method will return all decrypted messages where the probability
-                that they belong to the searched language is higher than this value.
-                0 by default (=the method will return all messages decrypted by brute force)
+                the method will return all decrypted
+                messages where the probability
+                that they belong to the searched language
+                is higher than this value.
+                0 by default (=the method will return
+                all messages decrypted by brute force)
 
         Returns:
             decrypted_messages (list):
@@ -44,19 +49,32 @@ class AffineCipherHacker(Hacker):
         for symbols_set in self.symbols_sets:
             affine_cipher = affine.AffineCipher(symbols=symbols_set)
             for key_a in range(2, len(symbols_set)):
-                
+
                 valid_keys = affine_cipher.check_keys(key_a=key_a)[0]
                 if not valid_keys:
                     continue
 
                 for key_b in range(2, len(symbols_set)):
-                    decrypted_message = affine_cipher.decrypt(message, key_a, key_b)
-                    lang, prob = self.lang_identifier.classify(decrypted_message)
+
+                    decrypted_message = affine_cipher.decrypt(
+                        message,
+                        key_a,
+                        key_b
+                    )
+
+                    lang, prob = self.lang_identifier.classify(
+                        decrypted_message
+                    )
 
                     if lang == self.language and prob >= p:
                         decrypted_messages.append({
                             "text": decrypted_message,
                             "p": prob
                         })
+        decrypted_messages = sorted(
+            decrypted_messages,
+            key=lambda x: x["p"],
+            reverse=True
+        )
 
-        return [message["text"] for message in sorted(decrypted_messages, key=lambda x: x["p"], reverse=True)]
+        return [message["text"] for message in decrypted_messages]
