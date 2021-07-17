@@ -7,6 +7,7 @@ Classes:
 import math
 from .exceptions import IncorrectCipherKeyError, IncorrectMessageError
 
+
 class SimpleTranspositionCipher:
     '''
     Class handling basic Caesar Cipher operations
@@ -43,7 +44,8 @@ class SimpleTranspositionCipher:
             raise IncorrectMessageError
 
         if not isinstance(key, int):
-            raise IncorrectCipherKeyError (message="The cipher key has to be an integer")
+            message = "The cipher key has to be an integer"
+            raise IncorrectCipherKeyError(message)
 
         cipher_table = [''] * key
 
@@ -54,7 +56,6 @@ class SimpleTranspositionCipher:
                 j += key
 
         return ''.join(cipher_table)
-
 
     def decrypt(self, message, key):
         '''
@@ -75,7 +76,8 @@ class SimpleTranspositionCipher:
             raise IncorrectMessageError
 
         if not isinstance(key, int):
-            raise IncorrectCipherKeyError(message="The cipher key has to be an integer")
+            message = "The cipher key has to be an integer"
+            raise IncorrectCipherKeyError(message)
 
         col_count = math.ceil(len(message) / key)
         rows_count = key
@@ -88,9 +90,10 @@ class SimpleTranspositionCipher:
             decryption_table[i] += char
             i += 1
 
-            if i == col_count or(
-                i == col_count-1 and
-                j >= rows_count-unused_cells):
+            if i == col_count or (
+                    i == col_count-1 and
+                    j >= rows_count-unused_cells
+                    ):
                 i, j = 0, j+1
 
         return ''.join(decryption_table)
