@@ -38,6 +38,9 @@ class SimpleSubstitutionCipher:
         self.symbols = symbols
 
     def __check_key(self, key):
+        if not isinstance(key, str):
+            return False
+
         key_list = list(key.lower())
         key_list.sort()
         symbols_list = list(self.symbols.lower())
