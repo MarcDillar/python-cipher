@@ -4,6 +4,9 @@ init:
 install:
 	pip install -e .
 
+lint:
+	flake8 --extend-ignore=W605 .
+
 build:
 	python -m build
 
