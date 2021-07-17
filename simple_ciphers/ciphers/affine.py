@@ -4,7 +4,8 @@ Classes:
     AffineCipher
 """
 import string
-import math
+from math import gcd
+from random import randint
 from .exceptions import IncorrectCipherKeyError, IncorrectMessageError
 from ..utils.math import modinv
 
@@ -43,17 +44,50 @@ class AffineCipher:
         self.symbols = symbols
 
     def __check_keys(self, key_a, key_b):
+        '''
+        Private method. Check if keys are valid
+
+        Parameters:
+            key_a, key_b (int, int): 2 keys
+
+        Returns:
+            bool: True if the keys are valid
+
+        Raises:
+            IncorrectCipherKeyError if the keys are not valid
+        '''
+
         error_message = None
         if not isinstance(key_a, int) or not isinstance(key_b, int):
             error_message = 'Keys must be integers'
         elif key_a < 0 or key_b < 0:
             error_message = 'Keys must be greater than 0'
-        elif math.gcd(key_a, len(self.symbols)) != 1:
+        elif gcd(key_a, len(self.symbols)) != 1:
             error_message = f'Key A ({key_a}) and the symbol set size ({len(self.symbols)}) are not relatively prime.'
 
         if error_message:
             raise IncorrectCipherKeyError(message=error_message)
-            
+
+        return True
+
+    def generate_random_keys(self):
+        '''
+        Generate 2 valid random keys for the Affine Cipher
+
+        Returns:
+            key_a, key_b (int, int): 2 valid keys
+        '''
+        valid_keys = False
+        while not valid_keys:
+            key_a = randint(2, len(self.symbols))
+            key_b = randint(2, len(self.symbols))
+            try:
+                self.__check_keys(key_a, key_b)
+                valid_keys = True
+            except IncorrectCipherKeyError:
+                valid_keys = False
+        
+        return key_a, key_b            
 
     def encrypt(self, message, key_a, key_b):
         '''
