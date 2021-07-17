@@ -7,6 +7,7 @@ from string import ascii_lowercase
 from random import sample
 from .exceptions import IncorrectCipherKeyError, IncorrectMessageError
 
+
 class SimpleSubstitutionCipher:
     '''
     Class handling simple Substitution Cipher operations
@@ -29,7 +30,8 @@ class SimpleSubstitutionCipher:
         Create a SimpleSubstitutionCipher instance
 
         Parameters:
-            symbols (str, optionnal): string made of characters handled by the Substitution Cipher
+            symbols (str, optionnal):
+            string made of characters handled by the Substitution Cipher
         '''
 
         if not isinstance(symbols, str):
@@ -55,7 +57,7 @@ class SimpleSubstitutionCipher:
         Returns:
             key (str): a valid key
         '''
-        return ''.join(sample(self.symbols,len(self.symbols)))
+        return ''.join(sample(self.symbols, len(self.symbols)))
 
     def encrypt(self, message, key):
         '''
@@ -107,14 +109,18 @@ class SimpleSubstitutionCipher:
 
         Raises:
             IncorrectMessageError: if message is not a string or is empty
-            IncorrectCipherKeyError: if the key isn't a string containing all letters cipher's symbols set once
+            IncorrectCipherKeyError:
+                if the key isn't a string containing
+                all letters cipher's symbols set once
             ValueError: if mode isn't correct
         '''
         if not isinstance(message, str) or len(message) == 0:
             raise IncorrectMessageError
 
         if not self.__check_key(key):
-            raise IncorrectCipherKeyError(message="The key should be a string containing all letters of the cipher's symbols set once")
+            message = """The key should be a string containing all letters
+            of the cipher's symbols set once"""
+            raise IncorrectCipherKeyError(message)
 
         if mode is None:
             mode = self.ENCRYPT_MODE
@@ -124,13 +130,22 @@ class SimpleSubstitutionCipher:
 
         encrypt = mode == self.ENCRYPT_MODE
 
-        source_symbols, dest_symbols = (self.symbols, key) if encrypt else (key, self.symbols)
+        if encrypt:
+            source_symbols, dest_symbols = self.symbols, key
+        else:
+            source_symbols, dest_symbols = key, self.symbols
 
         result = ""
         for symbol in message:
             if symbol.lower() in source_symbols.lower():
-                new_char = dest_symbols[source_symbols.lower().find(symbol.lower())]
-                result += new_char.upper() if symbol.isupper() else new_char.lower()
+                new_char = dest_symbols[
+                    source_symbols.lower().find(symbol.lower())
+                ]
+
+                if symbol.isupper():
+                    result += new_char.upper()
+                else:
+                    result += new_char.lower()
             else:
                 result += symbol
 
