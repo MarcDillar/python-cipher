@@ -14,14 +14,21 @@ class SimpleSubstitutionCipherTest(unittest.TestCase):
         """Test the result of an encryption"""
         cipher = substitution.SimpleSubstitutionCipher()
 
-        encrypted_message = cipher.encrypt(self.MESSAGE_TO_ENCRYPT, self.KEY)
+        encrypted_message = cipher.encrypt(
+            self.MESSAGE_TO_ENCRYPT,
+            key=self.KEY
+        )
         self.assertEqual(encrypted_message, self.MESSAGE_TO_DECRYPT)
 
     def test_decrypt(self):
         """Test the result of a decryption"""
         cipher = substitution.SimpleSubstitutionCipher()
 
-        decrypted_message = cipher.decrypt(self.MESSAGE_TO_DECRYPT, self.KEY)
+        decrypted_message = cipher.decrypt(
+            self.MESSAGE_TO_DECRYPT,
+            key=self.KEY
+        )
+
         self.assertEqual(decrypted_message, self.MESSAGE_TO_ENCRYPT)
 
     def test_encrypt_method_incorrect_message(self):
@@ -30,7 +37,7 @@ class SimpleSubstitutionCipherTest(unittest.TestCase):
         an Exception if the message is incorrect
         """
         with self.assertRaises(cipher_exceptions.IncorrectMessageError):
-            substitution.SimpleSubstitutionCipher().encrypt(1, self.KEY)
+            substitution.SimpleSubstitutionCipher().encrypt(1, key=self.KEY)
 
     def test_encrypt_method_incorrect_key(self):
         """
@@ -39,7 +46,7 @@ class SimpleSubstitutionCipherTest(unittest.TestCase):
         """
         with self.assertRaises(cipher_exceptions.IncorrectCipherKeyError):
             cipher = substitution.SimpleSubstitutionCipher()
-            cipher.encrypt(self.MESSAGE_TO_ENCRYPT, "a")
+            cipher.encrypt(self.MESSAGE_TO_ENCRYPT, key="a")
 
     def test_decrypt_method_incorrect_message(self):
         """
@@ -47,7 +54,7 @@ class SimpleSubstitutionCipherTest(unittest.TestCase):
         an Exception if the message is incorrect
         """
         with self.assertRaises(cipher_exceptions.IncorrectMessageError):
-            substitution.SimpleSubstitutionCipher().decrypt(1, self.KEY)
+            substitution.SimpleSubstitutionCipher().decrypt(1, key=self.KEY)
 
     def test_decrypt_method_incorrect_key(self):
         """
@@ -56,7 +63,7 @@ class SimpleSubstitutionCipherTest(unittest.TestCase):
         """
         with self.assertRaises(cipher_exceptions.IncorrectCipherKeyError):
             cipher = substitution.SimpleSubstitutionCipher()
-            cipher.decrypt(self.MESSAGE_TO_DECRYPT, "a")
+            cipher.decrypt(self.MESSAGE_TO_DECRYPT, key="a")
 
     def test_init_incorrect_symbols_list(self):
         """
@@ -73,15 +80,15 @@ class SimpleSubstitutionCipherTest(unittest.TestCase):
         """
         with self.assertRaises(ValueError):
             cipher = substitution.SimpleSubstitutionCipher()
-            cipher.cipher("My message", 2, mode="incorrect type")
+            cipher.cipher("My message", key=2, mode="incorrect type")
 
     def test_reversible(self):
         """Test that an encrypted message can be derypted with the same key"""
 
         cipher = substitution.SimpleSubstitutionCipher()
 
-        encrypted_message = cipher.encrypt(self.MESSAGE_TO_ENCRYPT, self.KEY)
-        decrypted_message = cipher.decrypt(encrypted_message, self.KEY)
+        message = cipher.encrypt(self.MESSAGE_TO_ENCRYPT, key=self.KEY)
+        decrypted_message = cipher.decrypt(message, key=self.KEY)
         self.assertEqual(self.MESSAGE_TO_ENCRYPT, decrypted_message)
 
 

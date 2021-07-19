@@ -24,6 +24,7 @@ class SimpleSubstitutionCipher:
 
     ENCRYPT_MODE = "encrypt"
     DECRYPT_MODE = "decrypt"
+    PLACEHOLDER = "_"
 
     def __init__(self, symbols=ascii_lowercase):
         '''
@@ -50,6 +51,22 @@ class SimpleSubstitutionCipher:
 
         return "".join(key_list) == "".join(symbols_list)
 
+    def __get_mapping(self, key, mapping):
+        if key and not mapping:
+            if not self.__check_key(key):
+                message = """The key should be a string containing all letters
+                of the cipher's symbols set once"""
+                raise IncorrectCipherKeyError(message)
+            keys = self.symbols
+            values = key
+        elif mapping:
+            keys = "".join(list(mapping.keys()))
+            values = "".join([
+                mapping[key][0] if len(mapping[key]) == 1 else self.PLACEHOLDER
+                for key in keys
+            ])
+        return keys, values
+
     def generate_random_key(self):
         '''
         Generate a random valid key
@@ -59,13 +76,16 @@ class SimpleSubstitutionCipher:
         '''
         return ''.join(sample(self.symbols, len(self.symbols)))
 
-    def encrypt(self, message, key):
+    def encrypt(self, message, key=None, mapping=None):
         '''
         Encrypts a message using the Simple Substitution cipher.
 
         Parameters:
             message (str): message to encrypt
-            key (str): key of the cipher
+            key (str, optionnal): key of the cipher
+            mapping (dict, optionnal):
+                dictionary where keys are the source characters
+                and values are the destination characters
 
         Returns:
             message (str): encrypted message
@@ -75,15 +95,23 @@ class SimpleSubstitutionCipher:
             IncorrectCipherKeyError: if key isn't an integer
         '''
 
-        return self.cipher(message, key, mode=self.ENCRYPT_MODE)
+        return self.cipher(
+            message,
+            key=key,
+            mapping=mapping,
+            mode=self.ENCRYPT_MODE
+        )
 
-    def decrypt(self, message, key):
+    def decrypt(self, message, key=None, mapping=None):
         '''
         Decrypts a message using the Simple Substitution cipher.
 
         Parameters:
             message (str): message to decrypt
-            key (str): key of the cipher
+            key (str, optionnal): key of the cipher
+            mapping (dict, optionnal):
+                dictionary where keys are the source characters
+                and values are the destination characters
 
         Returns:
             message (str): decrypted message
@@ -93,15 +121,23 @@ class SimpleSubstitutionCipher:
             IncorrectCipherKeyError: if key isn't an integer
         '''
 
-        return self.cipher(message, key, mode=self.DECRYPT_MODE)
+        return self.cipher(
+            message,
+            key=key,
+            mapping=mapping,
+            mode=self.DECRYPT_MODE
+        )
 
-    def cipher(self, message, key, mode=None):
+    def cipher(self, message, key=None, mapping=None, mode=ENCRYPT_MODE):
         '''
         Encrypts or decrypts a message using the Simple Substitution cipher.
 
         Parameters:
             message (str): message to decrypt
-            key (str): key of the cipher
+            key (str, optionnal): key of the cipher
+            mapping (dict, optionnal):
+                dictionary where keys are the source characters
+                and values are the destination characters
             mode (string, optionnal): encrypt or decrypt. Default: encrypt
 
         Returns:
@@ -117,23 +153,15 @@ class SimpleSubstitutionCipher:
         if not isinstance(message, str) or len(message) == 0:
             raise IncorrectMessageError
 
-        if not self.__check_key(key):
-            message = """The key should be a string containing all letters
-            of the cipher's symbols set once"""
-            raise IncorrectCipherKeyError(message)
-
-        if mode is None:
-            mode = self.ENCRYPT_MODE
-
         if mode not in [self.DECRYPT_MODE, self.ENCRYPT_MODE]:
             raise ValueError
 
-        encrypt = mode == self.ENCRYPT_MODE
+        keys, values = self.__get_mapping(key, mapping)
 
-        if encrypt:
-            source_symbols, dest_symbols = self.symbols, key
+        if mode == self.ENCRYPT_MODE:
+            source_symbols, dest_symbols = keys, values
         else:
-            source_symbols, dest_symbols = key, self.symbols
+            source_symbols, dest_symbols = values, keys
 
         result = ""
         for symbol in message:
