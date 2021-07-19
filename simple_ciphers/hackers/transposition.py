@@ -28,7 +28,8 @@ class SimpleTranspositionCipherHacker(Hacker):
 
     def brute_force(self, message, p=0):
         '''
-        Corrects an index if out of the symbols list bounds.
+        Tries to decrypt by brute force a message
+        encrypted using a Simple Transposition Cipher
 
         Parameters:
             message (str): message that needs to be decrypted
