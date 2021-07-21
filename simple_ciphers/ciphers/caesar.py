@@ -38,8 +38,14 @@ class CaesarCipher:
         Create a CaesarCipher instance
 
         Parameters:
+            simple (bool, optionnal):
+                usage of the cipher's simple mode.
+                simple mode preserves the message's characters case
+                and only encrypts letters.
+                default: False
             symbols (str, optionnal):
-                string made of characters used by the Caesar Cipher
+                string made of characters used by the Caesar Cipher.
+                default: string.printable
         '''
         self.simple = simple
         if simple:
