@@ -33,7 +33,7 @@ class CaesarCipher:
     ENCRYPT_MODE = "encrypt"
     DECRYPT_MODE = "decrypt"
 
-    def __init__(self, symbols=string.printable):
+    def __init__(self, simple=False, symbols=string.printable):
         '''
         Create a CaesarCipher instance
 
@@ -41,11 +41,14 @@ class CaesarCipher:
             symbols (str, optionnal):
                 string made of characters used by the Caesar Cipher
         '''
+        self.simple = simple
+        if simple:
+            self.symbols = string.ascii_letters
+        else:
+            if not isinstance(symbols, str):
+                raise ValueError
 
-        if not isinstance(symbols, str):
-            raise ValueError
-
-        self.symbols = symbols
+            self.symbols = symbols
 
     def __handle_index_wraparound(self, index):
         '''
@@ -150,7 +153,11 @@ class CaesarCipher:
                     new_index = index + key
 
                 new_symbol = symbols[self.__handle_index_wraparound(new_index)]
-
+            if self.simple:
+                if symbol.islower():
+                    new_symbol = new_symbol.lower()
+                else:
+                    new_symbol = new_symbol.upper()
             translated += new_symbol
 
         return translated
