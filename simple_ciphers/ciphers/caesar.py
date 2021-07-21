@@ -45,6 +45,7 @@ class CaesarCipher:
                 default: False
             symbols (str, optionnal):
                 string made of characters used by the Caesar Cipher.
+                Is ignored if simple mode is activated.
                 default: string.printable
         '''
         self.simple = simple
