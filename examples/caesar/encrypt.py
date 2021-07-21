@@ -1,4 +1,4 @@
-"""Example of message encryption using the Caesar cipher"""
+"""Examples of message encryption using the Caesar cipher"""
 
 from simple_ciphers.ciphers.caesar import CaesarCipher
 
@@ -8,4 +8,8 @@ KEY = 10
 caesar_cipher = CaesarCipher()
 
 encrypted_message = caesar_cipher.encrypt(message=MESSAGE_TO_ENCRYPT, key=KEY)
+print(encrypted_message)
+
+simple_cipher = CaesarCipher(simple=True)
+encrypted_message = simple_cipher.encrypt(message=MESSAGE_TO_ENCRYPT, key=KEY)
 print(encrypted_message)
