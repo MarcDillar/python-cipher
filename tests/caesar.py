@@ -8,7 +8,7 @@ class CaesarCipherTest(unittest.TestCase):
 
     MESSAGE_TO_ENCRYPT = "This is my original message!"
     MESSAGE_TO_DECRYPT = "'uvF7vF7zL7BEvtvAny7zrFFntr."
-    MESSAGE_TO_DECRYPT_SIMPLE_MODE = "Drsc sc wi ybsqsxkv wocckqo!"
+    MESSAGE_TO_DECRYPT_SIMPLE_MODE = "Guvf vf zl bevtvany zrffntr!"
     KEY = 13
 
     def test_encrypt(self):
@@ -17,7 +17,7 @@ class CaesarCipherTest(unittest.TestCase):
         encrypted_message = cipher.encrypt(self.MESSAGE_TO_ENCRYPT, self.KEY)
         self.assertEqual(encrypted_message, self.MESSAGE_TO_DECRYPT)
 
-    def encrypt_simple(self):
+    def test_encrypt_simple(self):
         """Test the result of an encryption using Simple mode"""
         cipher = caesar.CaesarCipher(simple=True)
         encrypted_message = cipher.encrypt(self.MESSAGE_TO_ENCRYPT, self.KEY)
@@ -25,6 +25,15 @@ class CaesarCipherTest(unittest.TestCase):
             encrypted_message,
             self.MESSAGE_TO_DECRYPT_SIMPLE_MODE
         )
+
+    def test_decrypt_simple(self):
+        """Test the result of a decryption"""
+        cipher = caesar.CaesarCipher(simple=True)
+        decrypted_message = cipher.decrypt(
+            self.MESSAGE_TO_DECRYPT_SIMPLE_MODE,
+            self.KEY
+        )
+        self.assertEqual(decrypted_message, self.MESSAGE_TO_ENCRYPT)
 
     def test_decrypt(self):
         """Test the result of a decryption"""
