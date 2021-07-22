@@ -38,7 +38,7 @@ class CaesarCipherTest(unittest.TestCase):
     def test_decrypt(self):
         """Test the result of a decryption"""
         cipher = caesar.CaesarCipher()
-        decrypted_message = cipher.decrypt("'uvF7vF7zL7BEvtvAny7zrFFntr.", 13)
+        decrypted_message = cipher.decrypt(self.MESSAGE_TO_DECRYPT, self.KEY)
         self.assertEqual(decrypted_message, "This is my original message!")
 
     def test_encrypt_method_incorrect_message(self):
