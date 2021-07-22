@@ -30,7 +30,7 @@ class SimpleSubstitutionCipher(Cipher):
     def __init__(self, symbols=ascii_lowercase):
         super().__init__(symbols=symbols)
 
-    def __check_key(self, key):
+    def _check_key(self, key):
         if not isinstance(key, str):
             return False
 
@@ -39,14 +39,16 @@ class SimpleSubstitutionCipher(Cipher):
         symbols_list = list(self.symbols.lower())
         symbols_list.sort()
 
-        return "".join(key_list) == "".join(symbols_list)
+        if "".join(key_list) != "".join(symbols_list):
+            raise IncorrectCipherKeyError(
+                """The key must be a string containing all letters
+                of the cipher's symbols set once""")
+                
+        return True
 
     def __get_mapping(self, key, mapping):
         if key and not mapping:
-            if not self.__check_key(key):
-                message = """The key should be a string containing all letters
-                of the cipher's symbols set once"""
-                raise IncorrectCipherKeyError(message)
+            self._check_key(key)
             keys = self.symbols
             values = key
         elif mapping:

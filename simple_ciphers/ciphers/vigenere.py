@@ -57,6 +57,13 @@ class VigenereCipher(Cipher):
             )
         )
 
+    def _check_key(self, key):
+        if not isinstance(key, str) or len(key) == 0:
+            raise IncorrectCipherKeyError(
+                "The key must be a non empty string"
+            )
+        return True
+
     def __char_key_to_int(self, char):
         if char in self.symbols:
             return self.symbols.find(char)
@@ -114,11 +121,7 @@ class VigenereCipher(Cipher):
             ValueError: if mode isn't correct
         '''
         self._check_message(message)
-
-        if not isinstance(key, str) or len(key) == 0:
-            raise IncorrectCipherKeyError(
-                "The key needs to be a non empty string"
-            )
+        self._check_key(key)        
 
         if mode is None:
             mode = self.ENCRYPT_MODE

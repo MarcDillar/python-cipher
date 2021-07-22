@@ -40,7 +40,7 @@ class SimpleTranspositionCipherTest(unittest.TestCase):
         Test that the encrypt method raises
         an Exception if the key is incorrect
         """
-        with self.assertRaises(transposition.IncorrectCipherKeyError):
+        with self.assertRaises(cipher_exceptions.IncorrectCipherKeyError):
             cipher = transposition.SimpleTranspositionCipher()
             cipher.encrypt("This is another message", "a")
 

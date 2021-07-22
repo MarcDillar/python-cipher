@@ -90,3 +90,4 @@ class Cipher:
             raise IncorrectCipherKeyError(
                 "The cipher key must be an integer"
             )
+        return True
