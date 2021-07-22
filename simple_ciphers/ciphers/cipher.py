@@ -4,7 +4,7 @@ Classes:
     Cipher
 """
 import string
-from .exceptions import IncorrectMessageError
+from .exceptions import IncorrectMessageError, IncorrectCipherKeyError
 
 
 class Cipher:
@@ -84,3 +84,9 @@ class Cipher:
         if not isinstance(message, str) or len(message) == 0:
             raise IncorrectMessageError
         return True
+
+    def _check_key(self, key):
+        if not isinstance(key, int):
+            raise IncorrectCipherKeyError(
+                "The cipher key must be an integer"
+            )

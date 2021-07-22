@@ -5,7 +5,6 @@ Classes:
 """
 import string
 from .cipher import Cipher
-from .exceptions import IncorrectCipherKeyError
 
 
 class CaesarCipher(Cipher):
@@ -92,10 +91,7 @@ class CaesarCipher(Cipher):
         '''
 
         self._check_message(message)
-
-        if not isinstance(key, int):
-            message = "The cipher key has to be an integer"
-            raise IncorrectCipherKeyError(message)
+        self._check_key(key)
 
         if mode is None:
             mode = self.ENCRYPT_MODE
