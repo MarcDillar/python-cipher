@@ -4,6 +4,7 @@ Classes:
     Cipher
 """
 import string
+from .exceptions import IncorrectMessageError
 
 
 class Cipher:
@@ -78,3 +79,8 @@ class Cipher:
         if index < 0:
             return index + len(self.symbols)
         return index
+
+    def _check_message(self, message):
+        if not isinstance(message, str) or len(message) == 0:
+            raise IncorrectMessageError
+        return True

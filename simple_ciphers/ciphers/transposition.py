@@ -6,7 +6,7 @@ Classes:
 
 import math
 from .cipher import Cipher
-from .exceptions import IncorrectCipherKeyError, IncorrectMessageError
+from .exceptions import IncorrectCipherKeyError
 
 
 class SimpleTranspositionCipher(Cipher):
@@ -41,8 +41,7 @@ class SimpleTranspositionCipher(Cipher):
             IncorrectCipherKeyError: if key isn't an integer
         '''
 
-        if not isinstance(message, str) or len(message) == 0:
-            raise IncorrectMessageError
+        self._check_message(message)
 
         if not isinstance(key, int):
             message = "The cipher key has to be an integer"
@@ -73,8 +72,8 @@ class SimpleTranspositionCipher(Cipher):
             IncorrectMessageError: if message is not a string or is empty
             IncorrectCipherKeyError: if key isn't an integer
         '''
-        if not isinstance(message, str) or len(message) == 0:
-            raise IncorrectMessageError
+
+        self._check_message(message)
 
         if not isinstance(key, int):
             message = "The cipher key has to be an integer"

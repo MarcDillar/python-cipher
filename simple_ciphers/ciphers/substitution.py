@@ -6,7 +6,7 @@ Classes:
 from string import ascii_lowercase
 from random import sample
 from .cipher import Cipher
-from .exceptions import IncorrectCipherKeyError, IncorrectMessageError
+from .exceptions import IncorrectCipherKeyError
 
 
 class SimpleSubstitutionCipher(Cipher):
@@ -140,8 +140,8 @@ class SimpleSubstitutionCipher(Cipher):
                 all letters cipher's symbols set once
             ValueError: if mode isn't correct
         '''
-        if not isinstance(message, str) or len(message) == 0:
-            raise IncorrectMessageError
+
+        self._check_message(message)
 
         if mode not in [self.DECRYPT_MODE, self.ENCRYPT_MODE]:
             raise ValueError

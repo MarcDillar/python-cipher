@@ -49,7 +49,7 @@ class SimpleTranspositionCipherTest(unittest.TestCase):
         Test that the decrypt method raises
         an Exception if the message is incorrect
         """
-        with self.assertRaises(transposition.IncorrectMessageError):
+        with self.assertRaises(cipher_exceptions.IncorrectMessageError):
             transposition.SimpleTranspositionCipher().decrypt(1, 13)
 
     def test_decrypt_method_incorrect_key(self):

@@ -7,7 +7,7 @@ from string import printable
 from math import gcd
 from random import randint
 from .cipher import Cipher
-from .exceptions import IncorrectCipherKeyError, IncorrectMessageError
+from .exceptions import IncorrectCipherKeyError
 from ..utils.math import modinv
 
 
@@ -92,8 +92,7 @@ class AffineCipher(Cipher):
             IncorrectCipherKeyError: if keys are not valid
         '''
 
-        if not isinstance(message, str) or len(message) == 0:
-            raise IncorrectMessageError
+        self._check_message(message)
 
         # Check if both keys are valid
         valid_keys, error = self.check_keys(key_a=key_a, key_b=key_b)
@@ -127,8 +126,7 @@ class AffineCipher(Cipher):
             IncorrectCipherKeyError: if keys are not valid
         '''
 
-        if not isinstance(message, str) or len(message) == 0:
-            raise IncorrectMessageError
+        self._check_message(message)
 
         # Check if both keys are valid
         valid_keys, error = self.check_keys(key_a, key_b)

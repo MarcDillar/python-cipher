@@ -5,7 +5,7 @@ Classes:
 """
 import string
 from simple_ciphers.ciphers.cipher import Cipher
-from .exceptions import IncorrectCipherKeyError, IncorrectMessageError
+from .exceptions import IncorrectCipherKeyError
 
 
 class VigenereCipher(Cipher):
@@ -113,8 +113,7 @@ class VigenereCipher(Cipher):
             IncorrectCipherKeyError: if key is not a string or is empty
             ValueError: if mode isn't correct
         '''
-        if not isinstance(message, str) or len(message) == 0:
-            raise IncorrectMessageError
+        self._check_message(message)
 
         if not isinstance(key, str) or len(key) == 0:
             raise IncorrectCipherKeyError(
