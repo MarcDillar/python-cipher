@@ -4,10 +4,11 @@ Classes:
     CaesarCipher
 """
 import string
+from .cipher import Cipher
 from .exceptions import IncorrectCipherKeyError, IncorrectMessageError
 
 
-class CaesarCipher:
+class CaesarCipher(Cipher):
     '''
     Class handling basic Caesar Cipher operations
 
@@ -34,51 +35,7 @@ class CaesarCipher:
     DECRYPT_MODE = "decrypt"
 
     def __init__(self, simple=False, symbols=string.printable):
-        '''
-        Create a CaesarCipher instance
-
-        Parameters:
-            simple (bool, optionnal):
-                usage of the cipher's simple mode.
-                simple mode preserves the message's characters case
-                and only encrypts letters.
-                default: False
-            symbols (str, optionnal):
-                string made of characters used by the Caesar Cipher.
-                Is ignored if simple mode is activated.
-                default: string.printable
-        '''
-        self.simple = simple
-        if simple:
-            self.symbols = string.ascii_letters
-        else:
-            if not isinstance(symbols, str):
-                raise ValueError
-
-            self.symbols = symbols
-
-    def __handle_index_wraparound(self, index):
-        '''
-        Private method. Corrects an index if out of the symbols list bounds.
-
-        Parameters:
-            index (int): an index
-
-        Returns:
-            index (int):
-                corrected index that lies between the symbols list's bounds
-
-        Raises:
-            ValueError: if key isn't an integer
-        '''
-        if not isinstance(index, int):
-            raise ValueError
-
-        if index >= len(self.symbols):
-            return index - len(self.symbols)
-        if index < 0:
-            return index + len(self.symbols)
-        return index
+        super().__init__(simple=simple, symbols=symbols)
 
     def encrypt(self, message, key):
         '''
@@ -159,7 +116,7 @@ class CaesarCipher:
                 elif mode == self.ENCRYPT_MODE:
                     new_index = index + key
 
-                new_symbol = symbols[self.__handle_index_wraparound(new_index)]
+                new_symbol = symbols[self._handle_index_wraparound(new_index)]
             if self.simple:
                 if symbol.islower():
                     new_symbol = new_symbol.lower()

@@ -6,11 +6,12 @@ Classes:
 from string import printable
 from math import gcd
 from random import randint
+from .cipher import Cipher
 from .exceptions import IncorrectCipherKeyError, IncorrectMessageError
 from ..utils.math import modinv
 
 
-class AffineCipher:
+class AffineCipher(Cipher):
     '''
     Class handling basic Affine Cipher operations
 
@@ -31,18 +32,7 @@ class AffineCipher:
     '''
 
     def __init__(self, symbols=printable):
-        '''
-        Create a CaesarCipher instance
-
-        Parameters:
-            symbols (str, optionnal):
-                string made of characters used by the Caesar Cipher
-        '''
-
-        if not isinstance(symbols, str):
-            raise ValueError
-
-        self.symbols = symbols
+        super().__init__(symbols=symbols)
 
     def check_keys(self, key_a=0, key_b=0):
         '''

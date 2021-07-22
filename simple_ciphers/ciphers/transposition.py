@@ -5,12 +5,13 @@ Classes:
 """
 
 import math
+from .cipher import Cipher
 from .exceptions import IncorrectCipherKeyError, IncorrectMessageError
 
 
-class SimpleTranspositionCipher:
+class SimpleTranspositionCipher(Cipher):
     '''
-    Class handling basic Caesar Cipher operations
+    Class handling simple Transposition Cipher operations
 
     ...
 

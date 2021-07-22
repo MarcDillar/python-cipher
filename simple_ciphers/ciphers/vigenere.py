@@ -4,10 +4,11 @@ Classes:
     VigenereCipher
 """
 import string
+from simple_ciphers.ciphers.cipher import Cipher
 from .exceptions import IncorrectCipherKeyError, IncorrectMessageError
 
 
-class VigenereCipher:
+class VigenereCipher(Cipher):
     '''
     Class handling Vigenere Cipher operations
 
@@ -47,39 +48,9 @@ class VigenereCipher:
                 string made of characters used by the VigenereCipher Cipher.
                 default: string.printable
         '''
-        self.simple = simple
-        if simple:
-            self.symbols = string.ascii_letters
-        else:
-            if not isinstance(symbols, str):
-                raise ValueError
-
-            self.symbols = symbols
+        super().__init__(simple=simple, symbols=symbols)
         
         self.symbols = "".join(sorted(list(self.symbols), key=lambda x: ord(x)))
-
-    def __handle_index_wraparound(self, index):
-        '''
-        Private method. Corrects an index if out of the symbols list bounds.
-
-        Parameters:
-            index (int): an index
-
-        Returns:
-            index (int):
-                corrected index that lies between the symbols list's bounds
-
-        Raises:
-            ValueError: if index isn't an integer
-        '''
-        if not isinstance(index, int):
-            raise ValueError
-
-        if index >= len(self.symbols):
-            return index - len(self.symbols)
-        if index < 0:
-            return index + len(self.symbols)
-        return index
 
     def __char_key_to_int(self, char):
         if char in self.symbols:
@@ -165,7 +136,7 @@ class VigenereCipher:
                     new_index = index + key_int
 
                 new_symbol = self.symbols[
-                    self.__handle_index_wraparound(new_index)
+                    self._handle_index_wraparound(new_index)
                 ]
 
                 i = 0 if i == len(key)-1 else i+1

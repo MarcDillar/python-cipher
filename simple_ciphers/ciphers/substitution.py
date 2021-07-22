@@ -5,10 +5,11 @@ Classes:
 """
 from string import ascii_lowercase
 from random import sample
+from .cipher import Cipher
 from .exceptions import IncorrectCipherKeyError, IncorrectMessageError
 
 
-class SimpleSubstitutionCipher:
+class SimpleSubstitutionCipher(Cipher):
     '''
     Class handling simple Substitution Cipher operations
     ...
@@ -27,18 +28,7 @@ class SimpleSubstitutionCipher:
     PLACEHOLDER = "_"
 
     def __init__(self, symbols=ascii_lowercase):
-        '''
-        Create a SimpleSubstitutionCipher instance
-
-        Parameters:
-            symbols (str, optionnal):
-            string made of characters handled by the Substitution Cipher
-        '''
-
-        if not isinstance(symbols, str):
-            raise ValueError
-
-        self.symbols = symbols
+        super().__init__(symbols=symbols)
 
     def __check_key(self, key):
         if not isinstance(key, str):
