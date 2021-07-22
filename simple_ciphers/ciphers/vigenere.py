@@ -49,13 +49,18 @@ class VigenereCipher(Cipher):
                 default: string.printable
         '''
         super().__init__(simple=simple, symbols=symbols)
-        
-        self.symbols = "".join(sorted(list(self.symbols), key=lambda x: ord(x)))
+
+        self.symbols = "".join(
+            sorted(
+                list(self.symbols),
+                key=lambda x: ord(x)
+            )
+        )
 
     def __char_key_to_int(self, char):
         if char in self.symbols:
             return self.symbols.find(char)
-        return 0        
+        return 0
 
     def encrypt(self, message, key):
         '''
@@ -147,5 +152,5 @@ class VigenereCipher(Cipher):
                 else:
                     new_symbol = new_symbol.upper()
             translated += new_symbol
- 
+
         return translated

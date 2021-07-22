@@ -7,7 +7,7 @@ key = "This is my key"
 
 """
 Encryption using the simple mode
-The simple mode preserves the characters' case 
+The simple mode preserves the characters' case
 and only encrypts letters
 """
 simple_cipher = VigenereCipher(simple=True)
