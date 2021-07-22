@@ -4,10 +4,11 @@ Classes:
     VigenereCipher
 """
 import string
-from .exceptions import IncorrectCipherKeyError, IncorrectMessageError
+from simple_ciphers.ciphers.cipher import Cipher
+from .exceptions import IncorrectCipherKeyError
 
 
-class VigenereCipher:
+class VigenereCipher(Cipher):
     '''
     Class handling Vigenere Cipher operations
 
@@ -47,44 +48,26 @@ class VigenereCipher:
                 string made of characters used by the VigenereCipher Cipher.
                 default: string.printable
         '''
-        self.simple = simple
-        if simple:
-            self.symbols = string.ascii_letters
-        else:
-            if not isinstance(symbols, str):
-                raise ValueError
+        super().__init__(simple=simple, symbols=symbols)
 
-            self.symbols = symbols
-        
-        self.symbols = "".join(sorted(list(self.symbols), key=lambda x: ord(x)))
+        self.symbols = "".join(
+            sorted(
+                list(self.symbols),
+                key=lambda x: ord(x)
+            )
+        )
 
-    def __handle_index_wraparound(self, index):
-        '''
-        Private method. Corrects an index if out of the symbols list bounds.
-
-        Parameters:
-            index (int): an index
-
-        Returns:
-            index (int):
-                corrected index that lies between the symbols list's bounds
-
-        Raises:
-            ValueError: if index isn't an integer
-        '''
-        if not isinstance(index, int):
-            raise ValueError
-
-        if index >= len(self.symbols):
-            return index - len(self.symbols)
-        if index < 0:
-            return index + len(self.symbols)
-        return index
+    def _check_key(self, key):
+        if not isinstance(key, str) or len(key) == 0:
+            raise IncorrectCipherKeyError(
+                "The key must be a non empty string"
+            )
+        return True
 
     def __char_key_to_int(self, char):
         if char in self.symbols:
             return self.symbols.find(char)
-        return 0        
+        return 0
 
     def encrypt(self, message, key):
         '''
@@ -137,13 +120,8 @@ class VigenereCipher:
             IncorrectCipherKeyError: if key is not a string or is empty
             ValueError: if mode isn't correct
         '''
-        if not isinstance(message, str) or len(message) == 0:
-            raise IncorrectMessageError
-
-        if not isinstance(key, str) or len(key) == 0:
-            raise IncorrectCipherKeyError(
-                "The key needs to be a non empty string"
-            )
+        self._check_message(message)
+        self._check_key(key)        
 
         if mode is None:
             mode = self.ENCRYPT_MODE
@@ -165,7 +143,7 @@ class VigenereCipher:
                     new_index = index + key_int
 
                 new_symbol = self.symbols[
-                    self.__handle_index_wraparound(new_index)
+                    self._handle_index_wraparound(new_index)
                 ]
 
                 i = 0 if i == len(key)-1 else i+1
@@ -176,5 +154,5 @@ class VigenereCipher:
                 else:
                     new_symbol = new_symbol.upper()
             translated += new_symbol
- 
+
         return translated

@@ -5,10 +5,11 @@ Classes:
 """
 from string import ascii_lowercase
 from random import sample
-from .exceptions import IncorrectCipherKeyError, IncorrectMessageError
+from .cipher import Cipher
+from .exceptions import IncorrectCipherKeyError
 
 
-class SimpleSubstitutionCipher:
+class SimpleSubstitutionCipher(Cipher):
     '''
     Class handling simple Substitution Cipher operations
     ...
@@ -27,20 +28,9 @@ class SimpleSubstitutionCipher:
     PLACEHOLDER = "_"
 
     def __init__(self, symbols=ascii_lowercase):
-        '''
-        Create a SimpleSubstitutionCipher instance
+        super().__init__(symbols=symbols)
 
-        Parameters:
-            symbols (str, optionnal):
-            string made of characters handled by the Substitution Cipher
-        '''
-
-        if not isinstance(symbols, str):
-            raise ValueError
-
-        self.symbols = symbols
-
-    def __check_key(self, key):
+    def _check_key(self, key):
         if not isinstance(key, str):
             return False
 
@@ -49,14 +39,16 @@ class SimpleSubstitutionCipher:
         symbols_list = list(self.symbols.lower())
         symbols_list.sort()
 
-        return "".join(key_list) == "".join(symbols_list)
+        if "".join(key_list) != "".join(symbols_list):
+            raise IncorrectCipherKeyError(
+                """The key must be a string containing all letters
+                of the cipher's symbols set once""")
+                
+        return True
 
     def __get_mapping(self, key, mapping):
         if key and not mapping:
-            if not self.__check_key(key):
-                message = """The key should be a string containing all letters
-                of the cipher's symbols set once"""
-                raise IncorrectCipherKeyError(message)
+            self._check_key(key)
             keys = self.symbols
             values = key
         elif mapping:
@@ -150,8 +142,8 @@ class SimpleSubstitutionCipher:
                 all letters cipher's symbols set once
             ValueError: if mode isn't correct
         '''
-        if not isinstance(message, str) or len(message) == 0:
-            raise IncorrectMessageError
+
+        self._check_message(message)
 
         if mode not in [self.DECRYPT_MODE, self.ENCRYPT_MODE]:
             raise ValueError

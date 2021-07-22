@@ -5,12 +5,12 @@ Classes:
 """
 
 import math
-from .exceptions import IncorrectCipherKeyError, IncorrectMessageError
+from .cipher import Cipher
 
 
-class SimpleTranspositionCipher:
+class SimpleTranspositionCipher(Cipher):
     '''
-    Class handling basic Caesar Cipher operations
+    Class handling simple Transposition Cipher operations
 
     ...
 
@@ -40,12 +40,8 @@ class SimpleTranspositionCipher:
             IncorrectCipherKeyError: if key isn't an integer
         '''
 
-        if not isinstance(message, str) or len(message) == 0:
-            raise IncorrectMessageError
-
-        if not isinstance(key, int):
-            message = "The cipher key has to be an integer"
-            raise IncorrectCipherKeyError(message)
+        self._check_message(message)
+        self._check_key(key)
 
         cipher_table = [''] * key
 
@@ -72,12 +68,9 @@ class SimpleTranspositionCipher:
             IncorrectMessageError: if message is not a string or is empty
             IncorrectCipherKeyError: if key isn't an integer
         '''
-        if not isinstance(message, str) or len(message) == 0:
-            raise IncorrectMessageError
 
-        if not isinstance(key, int):
-            message = "The cipher key has to be an integer"
-            raise IncorrectCipherKeyError(message)
+        self._check_message(message)
+        self._check_key(key)
 
         col_count = math.ceil(len(message) / key)
         rows_count = key

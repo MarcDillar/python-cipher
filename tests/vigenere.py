@@ -7,19 +7,25 @@ class VigenereCipherTest(unittest.TestCase):
     """Unit Test Class"""
 
     MESSAGE_TO_ENCRYPT = "Here is the message that will be encrypted."
-    MESSAGE_TO_DECRYPT_SIMPLE_MODE = "Alzw ia lhq keuapni khkx ubst te mfcdwpvms."
+    MESSAGE_TO_DECRYPT = "Alzw ia lhq keuapni khkx ubst te mfcdwpvms."
     KEY = "This is my cipher key"
 
     def test_encrypt_simple(self):
         """Test the result of an encryption using the simple mode"""
         cipher = vigenere.VigenereCipher(simple=True)
         encrypted_message = cipher.encrypt(self.MESSAGE_TO_ENCRYPT, self.KEY)
-        self.assertEqual(encrypted_message, self.MESSAGE_TO_DECRYPT_SIMPLE_MODE)
+        self.assertEqual(
+            encrypted_message,
+            self.MESSAGE_TO_DECRYPT
+        )
 
     def test_decrypt_simple(self):
         """Test the result of a decryption using the simple mode"""
         cipher = vigenere.VigenereCipher(simple=True)
-        decrypted_message = cipher.decrypt(self.MESSAGE_TO_DECRYPT_SIMPLE_MODE, self.KEY)
+        decrypted_message = cipher.decrypt(
+            self.MESSAGE_TO_DECRYPT,
+            self.KEY
+        )
         self.assertEqual(decrypted_message, self.MESSAGE_TO_ENCRYPT)
 
     def test_encrypt_method_incorrect_message(self):
@@ -72,15 +78,21 @@ class VigenereCipherTest(unittest.TestCase):
             cipher.cipher("My message", self.KEY, mode="incorrect cipher type")
 
     def test_reversible_simple(self):
-        """Test that an encrypted message can be derypted with the same key using the simple mode"""
+        """
+        Test that an encrypted message can be decrypted
+        with the same key using the simple mode
+        """
         cipher = vigenere.VigenereCipher(simple=True)
 
         encrypted_message = cipher.encrypt(self.MESSAGE_TO_ENCRYPT, self.KEY)
         decrypted_message = cipher.decrypt(encrypted_message, self.KEY)
         self.assertEqual(self.MESSAGE_TO_ENCRYPT, decrypted_message)
 
-    def test_reversible_simple(self):
-        """Test that an encrypted message can be derypted with the same key"""
+    def test_reversible(self):
+        """
+        Test that an encrypted message can be decrypted
+        with the same key
+        """
         cipher = vigenere.VigenereCipher()
 
         encrypted_message = cipher.encrypt(self.MESSAGE_TO_ENCRYPT, self.KEY)
