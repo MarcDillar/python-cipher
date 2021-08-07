@@ -33,7 +33,7 @@ class CaesarCipher(Cipher):
     ENCRYPT_MODE = "encrypt"
     DECRYPT_MODE = "decrypt"
 
-    def __init__(self, simple=False, symbols=string.printable):
+    def __init__(self, simple=True, symbols=string.printable):
         super().__init__(simple=simple, symbols=symbols)
 
     def encrypt(self, message, key):
@@ -91,7 +91,7 @@ class CaesarCipher(Cipher):
         '''
 
         self._check_message(message)
-        self._check_key(key)
+        self.check_key(key)
 
         if mode is None:
             mode = self.ENCRYPT_MODE

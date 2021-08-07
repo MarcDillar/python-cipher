@@ -33,7 +33,7 @@ class Cipher:
     ENCRYPT_MODE = "encrypt"
     DECRYPT_MODE = "decrypt"
 
-    def __init__(self, simple=False, symbols=string.printable):
+    def __init__(self, simple=True, symbols=string.printable):
         '''
         Create a Cipher instance
 
@@ -42,7 +42,7 @@ class Cipher:
                 usage of the cipher's simple mode.
                 simple mode preserves the message's characters case
                 and only encrypts letters.
-                default: False
+                default: True
             symbols (str, optionnal):
                 string made of characters used by the Caesar Cipher.
                 Is ignored if simple mode is activated.
@@ -85,7 +85,7 @@ class Cipher:
             raise IncorrectMessageError
         return True
 
-    def _check_key(self, key):
+    def check_key(self, key):
         if not isinstance(key, int):
             raise IncorrectCipherKeyError(
                 "The cipher key must be an integer"

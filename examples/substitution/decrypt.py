@@ -8,7 +8,10 @@ cipher = SimpleSubstitutionCipher()
 
 # Decryption with a key
 KEY = 'LFWOAYUISVKMNXPBDCRJTQEGHZ'
-decrypted_message = cipher.decrypt(message=MESSAGE_TO_DECRYPT, key=KEY)
+decrypted_message = cipher.decrypt(
+        message=MESSAGE_TO_DECRYPT,
+        key=KEY
+        )
 print(decrypted_message)
 
 # Decryption with a mapping dictionnary
@@ -41,5 +44,8 @@ MAPPING = {
         "Z": "Z"
 }
 
-decrypted_message = cipher.decrypt(message=MESSAGE_TO_DECRYPT, mapping=MAPPING)
+decrypted_message = cipher.decrypt(
+        message=MESSAGE_TO_DECRYPT,
+        mapping=MAPPING
+)
 print(decrypted_message)

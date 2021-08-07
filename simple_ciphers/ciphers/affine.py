@@ -31,10 +31,17 @@ class AffineCipher(Cipher):
         Decrypts a message
     '''
 
-    def __init__(self, symbols=printable):
-        super().__init__(symbols=symbols)
+    def __init__(self, simple=True, symbols=printable):
+        super().__init__(simple=simple, symbols=symbols)
 
-    def _check_key(self, key_a=0, key_b=0):
+    def is_key_valid(self, key_a=0, key_b=0):
+        try:
+            self.check_key(key_a, key_b)
+        except IncorrectCipherKeyError:
+            return False
+        return True
+
+    def check_key(self, key_a=0, key_b=0):
         '''
         Check if keys are valid
 
@@ -73,7 +80,7 @@ class AffineCipher(Cipher):
             key_b = randint(2, len(self.symbols))
 
             try:
-                self._check_key(key_a=key_a, key_b=key_b)[0]
+                self.check_key(key_a=key_a, key_b=key_b)[0]
                 return key_a, key_b
             except IncorrectCipherKeyError:
                 pass
@@ -93,19 +100,25 @@ class AffineCipher(Cipher):
             IncorrectMessageError: if message is not a string or is empty
             IncorrectCipherKeyError: if keys are not valid
         '''
-
         self._check_message(message)
 
         # Check if both keys are valid
-        self._check_key(key_a=key_a, key_b=key_b)
+        self.check_key(key_a=key_a, key_b=key_b)
 
         encrypted_message = ''
         for symbol in message:
             if symbol in self.symbols:
                 symbolIndex = self.symbols.find(symbol)
-                encrypted_message += self.symbols[
+                new_symbol = self.symbols[
                     (symbolIndex * key_a + key_b) % len(self.symbols)
                 ]
+
+                if self.simple:
+                    if symbol.islower():
+                        new_symbol = new_symbol.lower()
+                    else:
+                        new_symbol = new_symbol.upper()
+                encrypted_message += new_symbol
             else:
                 encrypted_message += symbol
         return encrypted_message
@@ -125,11 +138,10 @@ class AffineCipher(Cipher):
             IncorrectMessageError: if message is not a string or is empty
             IncorrectCipherKeyError: if keys are not valid
         '''
-
         self._check_message(message)
 
         # Check if both keys are valid
-        self._check_key(key_a, key_b)
+        self.check_key(key_a, key_b)
 
         decrypted_message = ''
         inv_key_a = modinv(key_a, len(self.symbols))
@@ -137,9 +149,17 @@ class AffineCipher(Cipher):
         for symbol in message:
             if symbol in self.symbols:
                 symbolIndex = self.symbols.find(symbol)
-                decrypted_message += self.symbols[
+                new_symbol = self.symbols[
                     (symbolIndex - key_b) * inv_key_a % len(self.symbols)
                 ]
+
+                if self.simple:
+                    if symbol.islower():
+                        new_symbol = new_symbol.lower()
+                    else:
+                        new_symbol = new_symbol.upper()
+
+                decrypted_message += new_symbol
             else:
                 decrypted_message += symbol
         return decrypted_message

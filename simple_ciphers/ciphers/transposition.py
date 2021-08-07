@@ -41,7 +41,7 @@ class SimpleTranspositionCipher(Cipher):
         '''
 
         self._check_message(message)
-        self._check_key(key)
+        self.check_key(key)
 
         cipher_table = [''] * key
 
@@ -70,7 +70,7 @@ class SimpleTranspositionCipher(Cipher):
         '''
 
         self._check_message(message)
-        self._check_key(key)
+        self.check_key(key)
 
         col_count = math.ceil(len(message) / key)
         rows_count = key

@@ -13,13 +13,13 @@ class CaesarCipherTest(unittest.TestCase):
 
     def test_encrypt(self):
         """Test the result of an encryption"""
-        cipher = caesar.CaesarCipher()
+        cipher = caesar.CaesarCipher(simple=False)
         encrypted_message = cipher.encrypt(self.MESSAGE_TO_ENCRYPT, self.KEY)
         self.assertEqual(encrypted_message, self.MESSAGE_TO_DECRYPT)
 
     def test_encrypt_simple(self):
         """Test the result of an encryption using Simple mode"""
-        cipher = caesar.CaesarCipher(simple=True)
+        cipher = caesar.CaesarCipher()
         encrypted_message = cipher.encrypt(self.MESSAGE_TO_ENCRYPT, self.KEY)
         self.assertEqual(
             encrypted_message,
@@ -28,7 +28,7 @@ class CaesarCipherTest(unittest.TestCase):
 
     def test_decrypt_simple(self):
         """Test the result of a decryption"""
-        cipher = caesar.CaesarCipher(simple=True)
+        cipher = caesar.CaesarCipher()
         decrypted_message = cipher.decrypt(
             self.MESSAGE_TO_DECRYPT_SIMPLE_MODE,
             self.KEY
@@ -37,7 +37,7 @@ class CaesarCipherTest(unittest.TestCase):
 
     def test_decrypt(self):
         """Test the result of a decryption"""
-        cipher = caesar.CaesarCipher()
+        cipher = caesar.CaesarCipher(simple=False)
         decrypted_message = cipher.decrypt(self.MESSAGE_TO_DECRYPT, self.KEY)
         self.assertEqual(decrypted_message, "This is my original message!")
 
@@ -79,7 +79,7 @@ class CaesarCipherTest(unittest.TestCase):
         an Exception if the symbols argument is incorrect
         """
         with self.assertRaises(ValueError):
-            caesar.CaesarCipher(symbols=123)
+            caesar.CaesarCipher(simple=False, symbols=123)
 
     def test_cipher_incorrect_mode(self):
         """

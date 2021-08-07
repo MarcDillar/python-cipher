@@ -27,28 +27,41 @@ class SimpleSubstitutionCipher(Cipher):
     DECRYPT_MODE = "decrypt"
     PLACEHOLDER = "_"
 
-    def __init__(self, symbols=ascii_lowercase):
-        super().__init__(symbols=symbols)
+    def __init__(self, simple=True, symbols=ascii_lowercase):
+        super().__init__(simple=simple)
 
-    def _check_key(self, key):
+        if not isinstance(symbols, str):
+            raise ValueError
+        self.symbols = symbols
+
+    def check_key(self, key):
         if not isinstance(key, str):
-            return False
+            raise IncorrectCipherKeyError(
+                """The key must be a string containing all letters
+                of the cipher's symbols set once (case insensitive)""")
 
         key_list = list(key.lower())
         key_list.sort()
-        symbols_list = list(self.symbols.lower())
-        symbols_list.sort()
 
-        if "".join(key_list) != "".join(symbols_list):
-            raise IncorrectCipherKeyError(
-                """The key must be a string containing all letters
-                of the cipher's symbols set once""")
-                
-        return True
+        if self.simple:
+
+            symbols_list = list(set(self.symbols.lower()))
+            symbols_list.sort()
+
+        else:
+            symbols_list = list(set(self.symbols))
+            symbols_list.sort()
+
+        if key_list == symbols_list:
+            return True
+
+        raise IncorrectCipherKeyError(
+            """The key must be a string containing all letters
+            of the cipher's symbols set once (case insensitive)""")
 
     def __get_mapping(self, key, mapping):
         if key and not mapping:
-            self._check_key(key)
+            self.check_key(key)
             keys = self.symbols
             values = key
         elif mapping:
@@ -155,17 +168,27 @@ class SimpleSubstitutionCipher(Cipher):
         else:
             source_symbols, dest_symbols = values, keys
 
+        if self.simple:
+            source_symbols = source_symbols.lower()
+
         result = ""
         for symbol in message:
-            if symbol.lower() in source_symbols.lower():
+            symbol_to_search = symbol
+            if self.simple:
+                symbol_to_search = symbol_to_search.lower()
+
+            if symbol_to_search in source_symbols:
                 new_char = dest_symbols[
-                    source_symbols.lower().find(symbol.lower())
+                    source_symbols.find(symbol_to_search)
                 ]
 
-                if symbol.isupper():
-                    result += new_char.upper()
+                if self.simple:
+                    if symbol.isupper():
+                        result += new_char.upper()
+                    else:
+                        result += new_char.lower()
                 else:
-                    result += new_char.lower()
+                    result += new_char
             else:
                 result += symbol
 

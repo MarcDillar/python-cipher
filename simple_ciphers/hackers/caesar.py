@@ -26,6 +26,21 @@ class CaesarCipherHacker(Hacker):
         Decodes a message using brute force
     '''
 
+    def __brute_fore(self, cipher, message, p=0):
+        decrypted_messages = []
+        for key in range(1, len(cipher.symbols)):
+            candidate = self._get_candidate(
+                    cipher,
+                    p,
+                    message=message,
+                    key=key
+                )
+
+            if candidate:
+                decrypted_messages.append(candidate)
+
+        return decrypted_messages
+
     def brute_force(self, message, p=0):
         '''
         Tries to decrypt by brute force a message
@@ -47,22 +62,18 @@ class CaesarCipherHacker(Hacker):
         '''
 
         decrypted_messages = []
+        caesar_cipher = caesar.CaesarCipher()
+        decrypted_messages += self.__brute_fore(caesar_cipher, message, p=p)
+
         for symbols_set in self.symbols_sets:
-            caesar_cipher = caesar.CaesarCipher(symbols=symbols_set)
-            for key in range(len(symbols_set)):
-                decrypted_message = caesar_cipher.decrypt(message, key)
-                lang, prob = self.lang_identifier.classify(decrypted_message)
+            caesar_cipher = caesar.CaesarCipher(
+                simple=False,
+                symbols=symbols_set
+            )
+            decrypted_messages += self.__brute_fore(
+                caesar_cipher,
+                message,
+                p=p
+            )
 
-                if lang == self.language and prob >= p:
-                    decrypted_messages.append({
-                        "text": decrypted_message,
-                        "p": prob
-                    })
-
-        decrypted_messages = sorted(
-            decrypted_messages,
-            key=lambda x: x["p"],
-            reverse=True
-        )
-
-        return [message["text"] for message in decrypted_messages]
+        return Hacker._clean_list(decrypted_messages)

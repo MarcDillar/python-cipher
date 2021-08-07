@@ -12,7 +12,7 @@ class VigenereCipherTest(unittest.TestCase):
 
     def test_encrypt_simple(self):
         """Test the result of an encryption using the simple mode"""
-        cipher = vigenere.VigenereCipher(simple=True)
+        cipher = vigenere.VigenereCipher()
         encrypted_message = cipher.encrypt(self.MESSAGE_TO_ENCRYPT, self.KEY)
         self.assertEqual(
             encrypted_message,
@@ -21,7 +21,7 @@ class VigenereCipherTest(unittest.TestCase):
 
     def test_decrypt_simple(self):
         """Test the result of a decryption using the simple mode"""
-        cipher = vigenere.VigenereCipher(simple=True)
+        cipher = vigenere.VigenereCipher()
         decrypted_message = cipher.decrypt(
             self.MESSAGE_TO_DECRYPT,
             self.KEY
@@ -66,7 +66,7 @@ class VigenereCipherTest(unittest.TestCase):
         an Exception if the symbols argument is incorrect
         """
         with self.assertRaises(ValueError):
-            vigenere.VigenereCipher(symbols=123)
+            vigenere.VigenereCipher(simple=False, symbols=123)
 
     def test_cipher_incorrect_mode(self):
         """
@@ -82,7 +82,7 @@ class VigenereCipherTest(unittest.TestCase):
         Test that an encrypted message can be decrypted
         with the same key using the simple mode
         """
-        cipher = vigenere.VigenereCipher(simple=True)
+        cipher = vigenere.VigenereCipher()
 
         encrypted_message = cipher.encrypt(self.MESSAGE_TO_ENCRYPT, self.KEY)
         decrypted_message = cipher.decrypt(encrypted_message, self.KEY)
