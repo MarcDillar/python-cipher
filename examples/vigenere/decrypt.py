@@ -5,6 +5,6 @@ from simple_ciphers.ciphers.vigenere import VigenereCipher
 message = "Alzw ia lhq keuapni khkx ubst te mfcdwpvms."
 key = "This is my cipher key"
 
-cipher = VigenereCipher(simple=True)
+cipher = VigenereCipher()
 decrypted_message = cipher.decrypt(message, key)
 print(decrypted_message)
