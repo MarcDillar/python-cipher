@@ -29,6 +29,9 @@ class SimpleSubstitutionCipher(Cipher):
 
     def __init__(self, simple=True, symbols=ascii_lowercase):
         super().__init__(simple=simple)
+
+        if not isinstance(symbols, str):
+            raise ValueError
         self.symbols = symbols
 
     def check_key(self, key):
