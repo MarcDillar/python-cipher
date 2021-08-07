@@ -40,7 +40,6 @@ class SimpleSubstitutionCipher(Cipher):
                 """The key must be a string containing all letters
                 of the cipher's symbols set once (case insensitive)""")
 
-        
         key_list = list(key.lower())
         key_list.sort()
 
@@ -48,13 +47,13 @@ class SimpleSubstitutionCipher(Cipher):
 
             symbols_list = list(set(self.symbols.lower()))
             symbols_list.sort()
-            
+
         else:
             symbols_list = list(set(self.symbols))
             symbols_list.sort()
 
         if key_list == symbols_list:
-                return True
+            return True
 
         raise IncorrectCipherKeyError(
             """The key must be a string containing all letters

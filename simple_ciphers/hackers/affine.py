@@ -23,7 +23,7 @@ class AffineCipherHacker(Hacker):
     -------
     brute_force(message):
         Decodes a message using brute force
-    '''    
+    '''
 
     def __brute_fore(self, cipher, message, p=0):
         decrypted_messages = []

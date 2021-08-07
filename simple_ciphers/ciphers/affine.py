@@ -115,9 +115,9 @@ class AffineCipher(Cipher):
 
                 if self.simple:
                     if symbol.islower():
-                        new_symbol=new_symbol.lower()
+                        new_symbol = new_symbol.lower()
                     else:
-                        new_symbol=new_symbol.upper()
+                        new_symbol = new_symbol.upper()
                 encrypted_message += new_symbol
             else:
                 encrypted_message += symbol
@@ -152,13 +152,12 @@ class AffineCipher(Cipher):
                 new_symbol = self.symbols[
                     (symbolIndex - key_b) * inv_key_a % len(self.symbols)
                 ]
-                
 
                 if self.simple:
                     if symbol.islower():
-                        new_symbol=new_symbol.lower()
+                        new_symbol = new_symbol.lower()
                     else:
-                        new_symbol=new_symbol.upper()
+                        new_symbol = new_symbol.upper()
 
                 decrypted_message += new_symbol
             else:

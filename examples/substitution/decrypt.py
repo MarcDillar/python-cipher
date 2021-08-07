@@ -8,7 +8,7 @@ cipher = SimpleSubstitutionCipher()
 
 # Decryption with a key
 KEY = 'LFWOAYUISVKMNXPBDCRJTQEGHZ'
-decrypted_message = cipher.decrypt(       
+decrypted_message = cipher.decrypt(
         message=MESSAGE_TO_DECRYPT,
         key=KEY
         )

@@ -33,11 +33,11 @@ class CaesarCipherHacker(Hacker):
                     cipher,
                     p,
                     message=message,
-                    key=key                    
+                    key=key
                 )
 
             if candidate:
-                decrypted_messages.append(candidate)                
+                decrypted_messages.append(candidate)
 
         return decrypted_messages
 
@@ -66,7 +66,14 @@ class CaesarCipherHacker(Hacker):
         decrypted_messages += self.__brute_fore(caesar_cipher, message, p=p)
 
         for symbols_set in self.symbols_sets:
-            caesar_cipher = caesar.CaesarCipher(simple=False, symbols=symbols_set)
-            decrypted_messages += self.__brute_fore(caesar_cipher, message, p=p)
+            caesar_cipher = caesar.CaesarCipher(
+                simple=False,
+                symbols=symbols_set
+            )
+            decrypted_messages += self.__brute_fore(
+                caesar_cipher,
+                message,
+                p=p
+            )
 
         return Hacker._clean_list(decrypted_messages)
