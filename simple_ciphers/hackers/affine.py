@@ -3,7 +3,7 @@
 Classes:
     AffineCipherHacker
 """
-from simple_ciphers.ciphers import affine
+from simple_ciphers.ciphers.affine import AffineCipher
 from .hacker import Hacker
 
 
@@ -23,7 +23,29 @@ class AffineCipherHacker(Hacker):
     -------
     brute_force(message):
         Decodes a message using brute force
-    '''
+    '''    
+
+    def __brute_fore(self, cipher, message, p=0):
+        decrypted_messages = []
+        for key_a in range(2, len(cipher.symbols)):
+            valid_keys = cipher.is_key_valid(key_a=key_a)
+            if not valid_keys:
+                continue
+
+            for key_b in range(2, len(cipher.symbols)):
+
+                candidate = self._get_candidate(
+                    cipher,
+                    p,
+                    message=message,
+                    key_a=key_a,
+                    key_b=key_b
+                )
+
+                if candidate:
+                    decrypted_messages.append(candidate)
+
+        return decrypted_messages
 
     def brute_force(self, message, p=0):
         '''
@@ -46,35 +68,24 @@ class AffineCipherHacker(Hacker):
         '''
 
         decrypted_messages = []
+
+        affine_cipher = AffineCipher()
+        decrypted_messages += self.__brute_fore(
+                affine_cipher,
+                message,
+                p=p
+            )
+
         for symbols_set in self.symbols_sets:
-            affine_cipher = affine.AffineCipher(symbols=symbols_set)
-            for key_a in range(2, len(symbols_set)):
+            affine_cipher = AffineCipher(
+                simple=False,
+                symbols=symbols_set
+            )
 
-                valid_keys = affine_cipher.check_keys(key_a=key_a)[0]
-                if not valid_keys:
-                    continue
+            decrypted_messages += self.__brute_fore(
+                affine_cipher,
+                message,
+                p=p
+            )
 
-                for key_b in range(2, len(symbols_set)):
-
-                    decrypted_message = affine_cipher.decrypt(
-                        message,
-                        key_a,
-                        key_b
-                    )
-
-                    lang, prob = self.lang_identifier.classify(
-                        decrypted_message
-                    )
-
-                    if lang == self.language and prob >= p:
-                        decrypted_messages.append({
-                            "text": decrypted_message,
-                            "p": prob
-                        })
-        decrypted_messages = sorted(
-            decrypted_messages,
-            key=lambda x: x["p"],
-            reverse=True
-        )
-
-        return [message["text"] for message in decrypted_messages]
+        return Hacker._clean_list(decrypted_messages)
