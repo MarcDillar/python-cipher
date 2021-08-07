@@ -6,7 +6,7 @@ KEY_A = 7
 KEY_B = 47
 
 # Cipher using simple mode
-message_to_decrypt = "YSZr Zr ySx BxrrVLx ySVy TZuu cx xIjkhWyxq"
+message_to_decrypt = "Yszr zr ysx bxrrvlx ysvy tzuu cx xijkhwyxq"
 cipher = AffineCipher()
 decrypted_text = cipher.decrypt(message_to_decrypt, KEY_A, KEY_B)
 
