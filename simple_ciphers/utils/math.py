@@ -4,6 +4,7 @@ Math util functions
 Functions:
     egcd
     modinv
+    factors
 """
 
 
@@ -41,3 +42,30 @@ def modinv(a, m):
         raise Exception('modular inverse does not exist')
     else:
         return x % m
+
+def factors(n, max=None):
+    '''
+        Returns the factors of n
+        that are grater than 1 and lower than max
+
+        Parameters:
+            n (int)
+            max (int, optionnal):
+                equal to n by default
+
+        Returns:
+           list(int) : list of factors
+    '''
+
+    if not max:
+        max = n
+
+    factors=[]
+
+    for i in range(2, n + 1):
+        if i > max:
+            break
+        if n % i == 0:
+            factors.append(i)
+
+    return factors
