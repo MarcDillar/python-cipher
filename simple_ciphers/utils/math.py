@@ -43,6 +43,7 @@ def modinv(a, m):
     else:
         return x % m
 
+
 def factors(n, max=None):
     '''
         Returns the factors of n
@@ -60,7 +61,7 @@ def factors(n, max=None):
     if not max:
         max = n
 
-    factors=[]
+    factors = []
 
     for i in range(2, n + 1):
         if i > max:
