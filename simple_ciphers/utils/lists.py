@@ -2,15 +2,12 @@
 List util functions
 
 Functions:
-    most_frequent_elements
+    most_common
 """
 
-def most_frequent_elements(l):
-    result, max_count = [], 0
-    for n in set(l):
-        count = l.count(n)
-        if count == max_count:
-            result.append(n)
-        elif count > max_count:
-            result, max_count = [n], count
-    return result
+from collections import Counter
+
+
+def most_common(my_list, n=1):
+    c = Counter(my_list)
+    return [x[0] for x in c.most_common(n)]
