@@ -1,6 +1,7 @@
 """
-Example of message dictionary decryption
+Example of dictionary decryption
 of a message encrypted with a Simple Substitution cipher
+with an unknown cipher key
 """
 
 from simple_ciphers.ciphers.substitution import SimpleSubstitutionCipher
