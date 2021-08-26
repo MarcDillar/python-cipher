@@ -106,7 +106,6 @@ class VigenereCipherHacker(Hacker):
         decrypted_messages = []
         cipher = VigenereCipher()
 
-
         message_to_analyze = message
         if simple:
             message_to_analyze = remove_non_letters(message_to_analyze).upper()
@@ -125,8 +124,13 @@ class VigenereCipherHacker(Hacker):
             )
 
         for key in possible_keys:
-            candidate = self._get_candidate(cipher, p, message=message, key=key)
+            candidate = self._get_candidate(
+                cipher,
+                p,
+                message=message,
+                key=key
+            )
             if candidate:
                 decrypted_messages.append(candidate)
-        
+
         return Hacker._clean_list(decrypted_messages)

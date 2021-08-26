@@ -16,6 +16,9 @@ encrypted_message = cipher.encrypt(message, key)
 print(encrypted_message)
 
 # Cipher using a different character set
-cipher = VigenereCipher(simple=False, symbols="AZERTYUIOPQSDFGHJKLMWXCVBNazertyuiopqsdfghjklmwxcvbn ")
+cipher = VigenereCipher(
+    simple=False,
+    symbols="AZERTYUIOPQSDFGHJKLMWXCVBNazertyuiopqsdfghjklmwxcvbn "
+    )
 encrypted_message = cipher.encrypt(message, key)
 print(encrypted_message)
