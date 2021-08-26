@@ -38,4 +38,3 @@ print(f"Encrypted message:\n{encrypted_message}\n\n")
 
 decrypted_message = hacker.hack(encrypted_message)
 print(f"Decrypted message:\n{decrypted_message[:5]}")
-pass
