@@ -1,4 +1,5 @@
 import random
+from string import printable
 from math import gcd
 from .cipher import Cipher
 from ..utils.math import generate_prime_number, modinv
@@ -19,7 +20,8 @@ class RSACipher(Cipher):
         Decrypts a message
     '''
 
-    def __init__(self):
+    def __init__(self, simple=True, symbols=printable):
+        super().__init__(simple=simple, symbols=symbols)
         self.__generate_keys()
 
     def __generate_keys(self, keySize=1024):
