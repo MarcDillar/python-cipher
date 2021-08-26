@@ -79,7 +79,7 @@ def is_pseudo_prime(n, k=128):
         Test if a number is pseudo prime
         using the Miller-Rabin method
     """
-    
+
     if n == 2 or n == 3:
         return True
     if n <= 1 or n % 2 == 0:
