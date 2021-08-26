@@ -70,3 +70,20 @@ def factors(n, max=None):
             factors.append(i)
 
     return factors
+
+
+def prime_eratosthenes(n):
+    """Return all prime numbers below an upperbound
+
+    Parameters:
+        n (int): upper bound
+
+    Returns:
+        prime_list: list of prime numbers lower than n
+    """
+    prime_list = []
+    for i in range(2, n+1):
+        if i not in prime_list:
+            for j in range(i*i, n+1, i):
+                prime_list.append(j)
+    return prime_list
