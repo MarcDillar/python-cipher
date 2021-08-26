@@ -7,6 +7,8 @@ Functions:
     factors
 """
 
+from random import randrange, getrandbits
+
 
 def egcd(a, b):
     '''
@@ -72,40 +74,50 @@ def factors(n, max=None):
     return factors
 
 
-def prime_eratosthenes(n):
-    """Return all prime numbers below an upperbound
-
-    Parameters:
-        n (int): upper bound
-
-    Returns:
-        prime_list: list of prime numbers lower than n
+def is_pseudo_prime(n, k=128):
     """
-    prime_list = []
-    for i in range(2, n+1):
-        if i not in prime_list:
-            for j in range(i*i, n+1, i):
-                prime_list.append(j)
-    return prime_list
-
-
-def is_prime(n):
+        Test if a number is pseudo prime
+        using the Miller-Rabin method
     """
-    Return True if the integer parameter is prime
-    """
-    if (n < 2 or (n > 2 and n % 2 == 0) or (n > 3 and n % 3 == 0)):
-        return False
-    if n < 9:
+    
+    if n == 2 or n == 3:
         return True
+    if n <= 1 or n % 2 == 0:
+        return False
 
-    r = int(n**0.5)
-    # since all primes > 3 are of the form 6n ± 1
-    # start with f=5 (which is prime)
-    # and test f, f+2 for being prime
-    # then loop by 6.
-    f = 5
-    while f <= r:
-        if n % f == 0 or n % (f+2) == 0:
-            return False
-        f += 6
+    s = 0
+    r = n - 1
+    while r & 1 == 0:
+        s += 1
+        r //= 2
+
+    for _ in range(k):
+        a = randrange(2, n - 1)
+        x = pow(a, r, n)
+        if x != 1 and x != n - 1:
+            j = 1
+            while j < s and x != n - 1:
+                x = pow(x, 2, n)
+                if x == 1:
+                    return False
+                j += 1
+            if x != n - 1:
+                return False
     return True
+
+
+def generate_prime_number(length=1024):
+    """
+        Generate a prime number
+        Parameters:
+            length (int): length of the generated prime number in bits
+    """
+
+    while True:
+        # generate random bits
+        p = getrandbits(length)
+        # apply a mask to set MSB and LSB to 1
+        p |= (1 << length - 1) | 1
+
+        if is_pseudo_prime(p):
+            return p
