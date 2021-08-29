@@ -5,10 +5,11 @@ Classes:
 """
 from string import ascii_lowercase
 from random import sample
-from .exceptions import IncorrectCipherKeyError, IncorrectMessageError
+from .cipher import Cipher
+from .exceptions import IncorrectCipherKeyError
 
 
-class SimpleSubstitutionCipher:
+class SimpleSubstitutionCipher(Cipher):
     '''
     Class handling simple Substitution Cipher operations
     ...
@@ -26,37 +27,41 @@ class SimpleSubstitutionCipher:
     DECRYPT_MODE = "decrypt"
     PLACEHOLDER = "_"
 
-    def __init__(self, symbols=ascii_lowercase):
-        '''
-        Create a SimpleSubstitutionCipher instance
-
-        Parameters:
-            symbols (str, optionnal):
-            string made of characters handled by the Substitution Cipher
-        '''
+    def __init__(self, simple=True, symbols=ascii_lowercase):
+        super().__init__(simple=simple)
 
         if not isinstance(symbols, str):
             raise ValueError
-
         self.symbols = symbols
 
-    def __check_key(self, key):
+    def check_key(self, key):
         if not isinstance(key, str):
-            return False
+            raise IncorrectCipherKeyError(
+                """The key must be a string containing all letters
+                of the cipher's symbols set once (case insensitive)""")
 
         key_list = list(key.lower())
         key_list.sort()
-        symbols_list = list(self.symbols.lower())
-        symbols_list.sort()
 
-        return "".join(key_list) == "".join(symbols_list)
+        if self.simple:
+
+            symbols_list = list(set(self.symbols.lower()))
+            symbols_list.sort()
+
+        else:
+            symbols_list = list(set(self.symbols))
+            symbols_list.sort()
+
+        if key_list == symbols_list:
+            return True
+
+        raise IncorrectCipherKeyError(
+            """The key must be a string containing all letters
+            of the cipher's symbols set once (case insensitive)""")
 
     def __get_mapping(self, key, mapping):
         if key and not mapping:
-            if not self.__check_key(key):
-                message = """The key should be a string containing all letters
-                of the cipher's symbols set once"""
-                raise IncorrectCipherKeyError(message)
+            self.check_key(key)
             keys = self.symbols
             values = key
         elif mapping:
@@ -150,8 +155,8 @@ class SimpleSubstitutionCipher:
                 all letters cipher's symbols set once
             ValueError: if mode isn't correct
         '''
-        if not isinstance(message, str) or len(message) == 0:
-            raise IncorrectMessageError
+
+        self._check_message(message)
 
         if mode not in [self.DECRYPT_MODE, self.ENCRYPT_MODE]:
             raise ValueError
@@ -163,17 +168,27 @@ class SimpleSubstitutionCipher:
         else:
             source_symbols, dest_symbols = values, keys
 
+        if self.simple:
+            source_symbols = source_symbols.lower()
+
         result = ""
         for symbol in message:
-            if symbol.lower() in source_symbols.lower():
+            symbol_to_search = symbol
+            if self.simple:
+                symbol_to_search = symbol_to_search.lower()
+
+            if symbol_to_search in source_symbols:
                 new_char = dest_symbols[
-                    source_symbols.lower().find(symbol.lower())
+                    source_symbols.find(symbol_to_search)
                 ]
 
-                if symbol.isupper():
-                    result += new_char.upper()
+                if self.simple:
+                    if symbol.isupper():
+                        result += new_char.upper()
+                    else:
+                        result += new_char.lower()
                 else:
-                    result += new_char.lower()
+                    result += new_char
             else:
                 result += symbol
 

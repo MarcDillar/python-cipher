@@ -62,3 +62,22 @@ def language_patterns(lang="en"):
             patterns[pattern].append(word)
 
     return patterns
+
+
+def find_repeated_sequences_spacings(message, min=3, max=5):
+    seqSpacings = {}
+
+    for seqLen in range(min, max+1):
+        for seqStart in range(len(message) - seqLen):
+
+            seq = message[seqStart:seqStart + seqLen]
+
+            for i in range(seqStart + seqLen, len(message) - seqLen):
+                if message[i:i + seqLen] == seq:
+
+                    if seq not in seqSpacings:
+                        seqSpacings[seq] = []
+
+                    seqSpacings[seq].append(i - seqStart)
+
+    return seqSpacings

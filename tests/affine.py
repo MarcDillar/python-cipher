@@ -8,13 +8,14 @@ class AffineCipherTest(unittest.TestCase):
 
     MESSAGE_TO_ENCRYPT = "This is the message that will be encrypted"
     MESSAGE_TO_DECRYPT = "w%,H5,H5O%J51JHHhXJ5O%hO5*,  5oJ5J8vA\mOJC"
+    MESSAGE_TO_DECRYPT_SIMPLE = "YSZr Zr ySx BxrrVLx ySVy TZuu cx xIjkhWyxq"
     KEY_A = 7
     KEY_B = 47
 
     def test_encrypt(self):
         """Test the result of an encryption"""
 
-        cipher = affine.AffineCipher()
+        cipher = affine.AffineCipher(simple=False)
 
         encrypted_message = cipher.encrypt(
             self.MESSAGE_TO_ENCRYPT,
@@ -25,7 +26,7 @@ class AffineCipherTest(unittest.TestCase):
 
     def test_decrypt(self):
         """Test the result of a decryption"""
-        cipher = affine.AffineCipher()
+        cipher = affine.AffineCipher(simple=False)
         decrypted_message = cipher.decrypt(
             self.MESSAGE_TO_DECRYPT,
             self.KEY_A,
@@ -107,7 +108,7 @@ class AffineCipherTest(unittest.TestCase):
         an Exception if the symbols argument is incorrect
         """
         with self.assertRaises(ValueError):
-            affine.AffineCipher(symbols=123)
+            affine.AffineCipher(simple=False, symbols=123)
 
     def test_reversible(self):
         """Test that an encrypted message can be derypted with the same keys"""

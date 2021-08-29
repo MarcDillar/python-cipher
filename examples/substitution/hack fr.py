@@ -10,7 +10,7 @@ from simple_ciphers.hackers.substitution import SimpleSubstitutionCipherHacker
 cipher = SimpleSubstitutionCipher()
 hacker = SimpleSubstitutionCipherHacker(language="fr")
 
-MESSAGE_TO_ENCRYPT = """Tous les êtres humains naissent libreset égaux en dignité
+MESSAGE_TO_ENCRYPT = """Tous les êtres humains naissent libres et égaux en dignité
 et en droits. Ils sont doués de raison et de conscience et doivent agir les
 uns envers les autres dans un esprit de fraternité."""
 

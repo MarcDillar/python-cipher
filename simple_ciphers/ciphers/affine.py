@@ -6,11 +6,12 @@ Classes:
 from string import printable
 from math import gcd
 from random import randint
-from .exceptions import IncorrectCipherKeyError, IncorrectMessageError
+from .cipher import Cipher
+from .exceptions import IncorrectCipherKeyError
 from ..utils.math import modinv
 
 
-class AffineCipher:
+class AffineCipher(Cipher):
     '''
     Class handling basic Affine Cipher operations
 
@@ -30,21 +31,17 @@ class AffineCipher:
         Decrypts a message
     '''
 
-    def __init__(self, symbols=printable):
-        '''
-        Create a CaesarCipher instance
+    def __init__(self, simple=True, symbols=printable):
+        super().__init__(simple=simple, symbols=symbols)
 
-        Parameters:
-            symbols (str, optionnal):
-                string made of characters used by the Caesar Cipher
-        '''
+    def is_key_valid(self, key_a=0, key_b=0):
+        try:
+            self.check_key(key_a, key_b)
+        except IncorrectCipherKeyError:
+            return False
+        return True
 
-        if not isinstance(symbols, str):
-            raise ValueError
-
-        self.symbols = symbols
-
-    def check_keys(self, key_a=0, key_b=0):
+    def check_key(self, key_a=0, key_b=0):
         '''
         Check if keys are valid
 
@@ -67,9 +64,9 @@ class AffineCipher:
             are not relatively prime."""
 
         if error_message:
-            return False, IncorrectCipherKeyError(message=error_message)
+            raise IncorrectCipherKeyError(error_message)
 
-        return True, None
+        return True
 
     def generate_random_keys(self):
         '''
@@ -82,9 +79,11 @@ class AffineCipher:
             key_a = randint(2, len(self.symbols))
             key_b = randint(2, len(self.symbols))
 
-            valid_keys = self.check_keys(key_a=key_a, key_b=key_b)[0]
-            if valid_keys:
+            try:
+                self.check_key(key_a=key_a, key_b=key_b)[0]
                 return key_a, key_b
+            except IncorrectCipherKeyError:
+                pass
 
     def encrypt(self, message, key_a, key_b):
         '''
@@ -101,22 +100,25 @@ class AffineCipher:
             IncorrectMessageError: if message is not a string or is empty
             IncorrectCipherKeyError: if keys are not valid
         '''
-
-        if not isinstance(message, str) or len(message) == 0:
-            raise IncorrectMessageError
+        self._check_message(message)
 
         # Check if both keys are valid
-        valid_keys, error = self.check_keys(key_a=key_a, key_b=key_b)
-        if not valid_keys:
-            raise error
+        self.check_key(key_a=key_a, key_b=key_b)
 
         encrypted_message = ''
         for symbol in message:
             if symbol in self.symbols:
                 symbolIndex = self.symbols.find(symbol)
-                encrypted_message += self.symbols[
+                new_symbol = self.symbols[
                     (symbolIndex * key_a + key_b) % len(self.symbols)
                 ]
+
+                if self.simple:
+                    if symbol.islower():
+                        new_symbol = new_symbol.lower()
+                    else:
+                        new_symbol = new_symbol.upper()
+                encrypted_message += new_symbol
             else:
                 encrypted_message += symbol
         return encrypted_message
@@ -136,14 +138,10 @@ class AffineCipher:
             IncorrectMessageError: if message is not a string or is empty
             IncorrectCipherKeyError: if keys are not valid
         '''
-
-        if not isinstance(message, str) or len(message) == 0:
-            raise IncorrectMessageError
+        self._check_message(message)
 
         # Check if both keys are valid
-        valid_keys, error = self.check_keys(key_a, key_b)
-        if not valid_keys:
-            raise error
+        self.check_key(key_a, key_b)
 
         decrypted_message = ''
         inv_key_a = modinv(key_a, len(self.symbols))
@@ -151,9 +149,17 @@ class AffineCipher:
         for symbol in message:
             if symbol in self.symbols:
                 symbolIndex = self.symbols.find(symbol)
-                decrypted_message += self.symbols[
+                new_symbol = self.symbols[
                     (symbolIndex - key_b) * inv_key_a % len(self.symbols)
                 ]
+
+                if self.simple:
+                    if symbol.islower():
+                        new_symbol = new_symbol.lower()
+                    else:
+                        new_symbol = new_symbol.upper()
+
+                decrypted_message += new_symbol
             else:
                 decrypted_message += symbol
         return decrypted_message

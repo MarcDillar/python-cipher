@@ -71,7 +71,7 @@ class SimpleSubstitutionCipherTest(unittest.TestCase):
         an Exception if the symbols argument is incorrect
         """
         with self.assertRaises(ValueError):
-            substitution.SimpleSubstitutionCipher(symbols=123)
+            substitution.SimpleSubstitutionCipher(simple=False, symbols=123)
 
     def test_cipher_incorrect_mode(self):
         """
@@ -83,7 +83,7 @@ class SimpleSubstitutionCipherTest(unittest.TestCase):
             cipher.cipher("My message", key=2, mode="incorrect type")
 
     def test_reversible(self):
-        """Test that an encrypted message can be derypted with the same key"""
+        """Test that an encrypted message can be decrypted with the same key"""
 
         cipher = substitution.SimpleSubstitutionCipher()
 
