@@ -3,6 +3,7 @@
 [![Unit Tests](https://github.com/MarcDillar/python-cipher/actions/workflows/test.yml/badge.svg)](https://github.com/MarcDillar/python-cipher/actions/workflows/test.yml)
 
 This project compiles simple ciphers implementations in Python for teaching purposes.
+:warning: Do not use this project in a professional environment :warning:
 
 ## Installation
 
@@ -16,6 +17,10 @@ This project compiles simple ciphers implementations in Python for teaching purp
 ## Contribute
 
 Source Code: [https://github.com/MarcDillar/python-cipher](https://github.com/MarcDillar/python-cipher)
+
+## Code examples
+
+Code examples are available in the _examples_ folder.
 
 ## Support
 
