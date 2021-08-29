@@ -8,7 +8,7 @@ with open('LICENSE') as f:
 
 setup(
     name='simple-ciphers',
-    version='0.1.0',
+    version='1.0',
     description='Simple Python ciphers for teaching purposes',
     long_description=readme,
     long_description_content_type='text/markdown',
